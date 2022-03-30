@@ -5,6 +5,7 @@ import random
 
 
 class PgenCountMap:
+    
     def __init__(self, number_of_repertoires,
                  pgen_count_map_file=os.path.join(os.path.dirname(__file__), "pgen_count_map.tsv")):
         self.number_of_repertoires = number_of_repertoires
@@ -44,8 +45,15 @@ class PgenCountMap:
 
 
 if __name__ == '__main__':
+    # test_map = PgenCountMap(number_of_repertoires=200, pgen_count_map_file=
+    # '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv')
+    # print(test_map._get_pgen_bin_sample_size_weights())
+    # num_reps = test_map.get_absolute_number_of_repertoires((-11.0, -10.0))
+    # print(num_reps)
+
     test_map = PgenCountMap(number_of_repertoires=200, pgen_count_map_file=
-    '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv')
-    print(test_map._get_pgen_bin_sample_size_weights())
-    num_reps = test_map.get_absolute_number_of_repertoires((-11.0, -10.0))
-    print(num_reps)
+    '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_ground_truth_pgen_to_counts_mapping_with_vj.tsv')
+    # print(test_map._get_pgen_bin_sample_size_weights())
+    for i in range(10):
+        num_reps = test_map.get_absolute_number_of_repertoires((-11.0, -10.0))
+        print(num_reps)

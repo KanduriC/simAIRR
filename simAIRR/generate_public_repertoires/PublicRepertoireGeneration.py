@@ -86,4 +86,5 @@ if __name__ == '__main__':
         n_threads=2, pgen_count_map_obj=PgenCountMap(number_of_repertoires=10, pgen_count_map_file=
         '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv'),
         desired_num_repertoires=10)
-    test1 = test_gen.multi_concatenate_public_repertoire_chunks()
+    test_gen.multi_generate_public_repertoires()
+    test_gen.multi_concatenate_public_repertoire_chunks()

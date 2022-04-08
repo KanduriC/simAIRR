@@ -6,13 +6,13 @@ import random
 
 class PgenCountMap:
     
-    def __init__(self, number_of_repertoires,
-                 pgen_count_map_file=os.path.join(os.path.dirname(__file__), "pgen_count_map.tsv")):
+    def __init__(self, number_of_repertoires, pgen_count_map_file=os.path.join(os.path.dirname(__file__), "pgen_count_map.tsv")):
         self.number_of_repertoires = number_of_repertoires
         self.pgen_count_map_file = pgen_count_map_file
         self.pgen_count_map = pd.read_csv(self.pgen_count_map_file, index_col=None, header=0, sep='\t')
         self.pgen_count_map[self.pgen_count_map < 0] = 1e-100
         self.pgen_count_map[['pgen_left', 'pgen_right']] = np.log10(self.pgen_count_map[['pgen_left', 'pgen_right']]).astype(int)
+        self.pgen_count_map_dict = self._get_pgen_bin_sample_size_weights()
 
     def get_pgen_breaks(self):
         pgen_breaks = sorted(list(set(self.pgen_count_map['pgen_left']).union(set(self.pgen_count_map['pgen_right']))))
@@ -29,10 +29,10 @@ class PgenCountMap:
         return new_pgen_count_map
 
     def _get_implantation_rate(self, seq_pgen_bin: tuple):
-        pgen_count_map_dict = self._get_pgen_bin_sample_size_weights()
-        sample_size_intervals_list = list(pgen_count_map_dict[seq_pgen_bin].keys())
+        # pgen_count_map_dict = self._get_pgen_bin_sample_size_weights()
+        sample_size_intervals_list = list(self.pgen_count_map_dict[seq_pgen_bin].keys())
         keys_len = len(sample_size_intervals_list)
-        weights_list = list(pgen_count_map_dict[seq_pgen_bin].values())
+        weights_list = list(self.pgen_count_map_dict[seq_pgen_bin].values())
         sample_size_lower, sample_size_upper = [sample_size_intervals_list[i] for i in np.random.choice(keys_len, 1, p=weights_list)][0]
         return random.uniform(sample_size_lower, sample_size_upper)
 

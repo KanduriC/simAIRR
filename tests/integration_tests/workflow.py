@@ -31,20 +31,21 @@ def test_workflow():
     :param phenotype_burden:
     :param phenotype_pool_size:
     """
-    # out_path = "/Users/kanduric/Desktop/simairr_tests/baseline_reps/"
-    # olga_reps = OlgaRepertoiresGeneration(model='humanTRB', output_file_path=out_path,
-    #                                       n_seq=100, seed=1234,
-    #                                       n_reps=10, n_threads=2)
-    # olga_reps.olga_generate_multiple_repertoires()
-    # seq_filter = UniqueSequenceFilter(baseline_repertoires_path=out_path, public_sequence_proportion=0.1, seed=1234)
-    # seq_filter.write_unique_public_and_private_repertoire_components()
-    # comp_pgen = OlgaPgenComputation(os.path.join(out_path, "filtered_public_repertoires"), n_threads=3, model='humanTRB')
-    # comp_pgen.multi_compute_pgen()
-    # pgen_count_map = PgenCountMap(number_of_repertoires=10, pgen_count_map_file=
-    # '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv')
-    # pub_rep_gen = PublicRepertoireGeneration(
-    #     public_repertoires_path=os.path.join(out_path, "filtered_public_repertoires"),
-    #     n_threads=2, pgen_count_map_obj=pgen_count_map, desired_num_repertoires=10)
-    # pub_rep_gen.execute()
-    # rep_concat = PubPvtRepConcatenation(baseline_repertoires_path=out_path, n_threads=2)
-    # rep_concat.multi_concatenate_public_private_repertoires()
+    out_path = "/Users/kanduric/Desktop/simairr_tests/baseline_reps/"
+    olga_reps = OlgaRepertoiresGeneration(model='humanTRB', output_file_path=out_path,
+                                          n_seq=100, seed=1234,
+                                          n_reps=10, n_threads=2)
+    olga_reps.olga_generate_multiple_repertoires()
+    seq_filter = UniqueSequenceFilter(baseline_repertoires_path=out_path, public_sequence_proportion=0.1, seed=1234)
+    seq_filter.write_unique_public_and_private_repertoire_components()
+    comp_pgen = OlgaPgenComputation(os.path.join(out_path, "filtered_public_repertoires"), n_threads=3, model='humanTRB')
+    comp_pgen.multi_compute_pgen()
+    pgen_count_map = PgenCountMap(number_of_repertoires=10, pgen_count_map_file=
+    '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv')
+    pub_rep_gen = PublicRepertoireGeneration(
+        public_repertoires_path=os.path.join(out_path, "filtered_public_repertoires"),
+        n_threads=2, pgen_count_map_obj=pgen_count_map, desired_num_repertoires=10)
+    pub_rep_gen.execute()
+    rep_concat = PubPvtRepConcatenation(baseline_repertoires_path=out_path, n_threads=2)
+    rep_concat.multi_concatenate_public_private_repertoires()
+

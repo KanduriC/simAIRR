@@ -11,9 +11,9 @@ from simAIRR.util.utilities import makedir_if_not_exists, sort_olga_seq_by_pgen
 
 
 class Workflows:
-    def __init__(self, mode, olga_model, output_path, n_sequences, n_repertoires, n_threads, seed,
-                 public_seq_proportion, public_seq_pgen_count_mapping_file, signal_pgen_count_mapping_file,
-                 signal_sequences_file, positive_label_rate, phenotype_burden, phenotype_pool_size):
+    def __init__(self, mode: str, olga_model: str, output_path: str, n_sequences: int, n_repertoires: int, n_threads: int, seed: int,
+                 public_seq_proportion: float, public_seq_pgen_count_mapping_file: str, signal_pgen_count_mapping_file: str,
+                 signal_sequences_file: str, positive_label_rate: float, phenotype_burden: int, phenotype_pool_size: int):
         self.mode = mode
         self.olga_model = olga_model
         self.output_path = output_path

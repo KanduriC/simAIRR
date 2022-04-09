@@ -50,3 +50,7 @@ def sort_olga_seq_by_pgen(olga_sequence_file, olga_pgen_file):
 def write_yaml_file(yaml_dict, out_file_path):
     with open(out_file_path, "w+") as yaml_file:
         yaml.dump(yaml_dict, yaml_file)
+
+def merge_dicts(dict1, dict2):
+    merged_dict = {**dict1, **dict2}
+    return merged_dict

@@ -11,27 +11,31 @@ from simAIRR.util.utilities import makedir_if_not_exists, sort_olga_seq_by_pgen
 
 
 class Workflows:
-    def __init__(self, mode: str, olga_model: str, output_path: str, n_sequences: int, n_repertoires: int, n_threads: int, seed: int,
-                 public_seq_proportion: float, public_seq_pgen_count_mapping_file: str, signal_pgen_count_mapping_file: str,
-                 signal_sequences_file: str, positive_label_rate: float, phenotype_burden: int, phenotype_pool_size: int):
-        self.mode = mode
-        self.olga_model = olga_model
-        self.output_path = output_path
-        self.baseline_reps_path = os.path.join(self.output_path, "baseline_repertoires")
-        self.filtered_public_reps_path = os.path.join(self.baseline_reps_path, "filtered_public_repertoires")
-        self.n_sequences = n_sequences
-        self.n_repertoires = n_repertoires
-        self.n_threads = n_threads
-        self.seed = seed
-        self.public_seq_proportion = public_seq_proportion
-        self.public_seq_pgen_count_mapping_file = public_seq_pgen_count_mapping_file
-        self.signal_pgen_count_mapping_file = signal_pgen_count_mapping_file
-        self.signal_sequences_file = signal_sequences_file
-        self.positive_label_rate = positive_label_rate
-        self.n_pos_repertoires = int(round(self.n_repertoires * positive_label_rate))
-        self.phenotype_burden = phenotype_burden
-        self.phenotype_pool_size = phenotype_pool_size
-        self.signal_components_path = makedir_if_not_exists(os.path.join(self.output_path, "signal_components"))
+
+    def __init__(self, **kwargs):
+        self.__dict__.update({k: v for k, v in locals().items() if k != 'self'})
+
+    # def __init__(self, mode: str, olga_model: str, output_path: str, n_sequences: int, n_repertoires: int, n_threads: int, seed: int,
+    #              public_seq_proportion: float, public_seq_pgen_count_mapping_file: str, signal_pgen_count_mapping_file: str,
+    #              signal_sequences_file: str, positive_label_rate: float, phenotype_burden: int, phenotype_pool_size: int):
+    #     self.mode = mode
+    #     self.olga_model = olga_model
+    #     self.output_path = output_path
+    #     self.baseline_reps_path = os.path.join(self.output_path, "baseline_repertoires")
+    #     self.filtered_public_reps_path = os.path.join(self.baseline_reps_path, "filtered_public_repertoires")
+    #     self.n_sequences = n_sequences
+    #     self.n_repertoires = n_repertoires
+    #     self.n_threads = n_threads
+    #     self.seed = seed
+    #     self.public_seq_proportion = public_seq_proportion
+    #     self.public_seq_pgen_count_mapping_file = public_seq_pgen_count_mapping_file
+    #     self.signal_pgen_count_mapping_file = signal_pgen_count_mapping_file
+    #     self.signal_sequences_file = signal_sequences_file
+    #     self.positive_label_rate = positive_label_rate
+    #     self.n_pos_repertoires = int(round(self.n_repertoires * self.positive_label_rate))
+    #     self.phenotype_burden = phenotype_burden
+    #     self.phenotype_pool_size = phenotype_pool_size
+    #     self.signal_components_path = makedir_if_not_exists(os.path.join(self.output_path, "signal_components"))
 
     def _baseline_repertoire_generation(self):
         olga_reps = OlgaRepertoiresGeneration(model=self.olga_model, output_file_path=self.baseline_reps_path,

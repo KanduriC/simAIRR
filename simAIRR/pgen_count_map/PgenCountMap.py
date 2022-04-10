@@ -6,7 +6,7 @@ import random
 
 class PgenCountMap:
     
-    def __init__(self, number_of_repertoires, pgen_count_map_file=os.path.join(os.path.dirname(__file__), "pgen_count_map.tsv")):
+    def __init__(self, number_of_repertoires, pgen_count_map_file):
         self.number_of_repertoires = number_of_repertoires
         self.pgen_count_map_file = pgen_count_map_file
         self.pgen_count_map = pd.read_csv(self.pgen_count_map_file, index_col=None, header=0, sep='\t')

@@ -2,17 +2,31 @@ import pandas as pd
 import os
 import numpy as np
 import random
+import pytest
+import pandas.api.types as ptypes
 
 
 class PgenCountMap:
-    
+
     def __init__(self, number_of_repertoires, pgen_count_map_file):
         self.number_of_repertoires = number_of_repertoires
         self.pgen_count_map_file = pgen_count_map_file
-        self.pgen_count_map = pd.read_csv(self.pgen_count_map_file, index_col=None, header=0, sep='\t')
-        self.pgen_count_map[self.pgen_count_map < 0] = 1e-100
-        self.pgen_count_map[['pgen_left', 'pgen_right']] = np.log10(self.pgen_count_map[['pgen_left', 'pgen_right']]).astype(int)
+        self.pgen_count_map = self._process_pgen_count_map()
         self.pgen_count_map_dict = self._get_pgen_bin_sample_size_weights()
+
+    def _process_pgen_count_map(self):
+        pgen_count_map = pd.read_csv(self.pgen_count_map_file, index_col=None, header=0, sep='\t')
+        header_fields = ['pgen_left', 'pgen_right', 'sample_size_prop_left', 'sample_size_prop_right', 'prob']
+        assert list(pgen_count_map.columns) == header_fields, f"public_seq_pgen_count_mapping_file should have the " \
+                                                             f"following fields in the header:{header_fields}"
+        assert pgen_count_map.isnull().sum().sum() == 0, f"public_seq_pgen_count_mapping_file cannot have NaNs"
+        assert all(ptypes.is_numeric_dtype(pgen_count_map[col]) for col in pgen_count_map.columns), \
+            f"All fields of public_seq_pgen_count_mapping_file should be of numeric type"
+        pgen_count_map[pgen_count_map < 0] = 1e-100
+        pgen_count_map[pgen_count_map > 1] = 1.0
+        pgen_count_map[['pgen_left', 'pgen_right']] = np.log10(
+            pgen_count_map[['pgen_left', 'pgen_right']]).astype(int)
+        return pgen_count_map
 
     def get_pgen_breaks(self):
         pgen_breaks = sorted(list(set(self.pgen_count_map['pgen_left']).union(set(self.pgen_count_map['pgen_right']))))
@@ -33,7 +47,8 @@ class PgenCountMap:
         sample_size_intervals_list = list(self.pgen_count_map_dict[seq_pgen_bin].keys())
         keys_len = len(sample_size_intervals_list)
         weights_list = list(self.pgen_count_map_dict[seq_pgen_bin].values())
-        sample_size_lower, sample_size_upper = [sample_size_intervals_list[i] for i in np.random.choice(keys_len, 1, p=weights_list)][0]
+        sample_size_lower, sample_size_upper = \
+        [sample_size_intervals_list[i] for i in np.random.choice(keys_len, 1, p=weights_list)][0]
         return random.uniform(sample_size_lower, sample_size_upper)
 
     def get_absolute_number_of_repertoires(self, seq_pgen_bin: tuple):
@@ -44,16 +59,21 @@ class PgenCountMap:
         return absolute_number_of_repertoires
 
 
-if __name__ == '__main__':
-    # test_map = PgenCountMap(number_of_repertoires=200, pgen_count_map_file=
-    # '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv')
-    # print(test_map._get_pgen_bin_sample_size_weights())
-    # num_reps = test_map.get_absolute_number_of_repertoires((-11.0, -10.0))
-    # print(num_reps)
+# if __name__ == '__main__':
+#     import importlib_resources as pkg_resources
+#     with pkg_resources.as_file(
+#             pkg_resources.files("simAIRR.config_validator").joinpath(
+#                 "public_seq_pgen_count_map.tsv")) as count_map_file:
+#         test_map = PgenCountMap(number_of_repertoires=200, pgen_count_map_file=count_map_file)
+#         print(test_map._get_pgen_bin_sample_size_weights())
+#         num_reps = []
+#         for i in range(10):
+#             num_reps.append(test_map.get_absolute_number_of_repertoires((-100, -20)))
+#         print(num_reps, sum(i < 12 for i in num_reps))
+#         assert sum(i < 12 for i in num_reps) >= 0.7*len(num_reps)
+#         with pytest.raises(KeyError) as e:
+#             test_map.get_absolute_number_of_repertoires((-200, -100))
 
-    test_map = PgenCountMap(number_of_repertoires=200, pgen_count_map_file=
-    '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_ground_truth_pgen_to_counts_mapping_with_vj.tsv')
-    # print(test_map._get_pgen_bin_sample_size_weights())
-    for i in range(10):
-        num_reps = test_map.get_absolute_number_of_repertoires((-11.0, -10.0))
-        print(num_reps)
+
+
+

@@ -19,9 +19,9 @@ class UniqueSequenceFilter:
         public_df = concatenated_df.sample(frac=self.public_sequence_proportion, random_state=self.seed)
         private_df = concatenated_df.drop(public_df.index)
         filtered_public_repertoires_path = os.path.join(self.baseline_repertoires_path, "filtered_public_repertoires")
-        makedir_if_not_exists(filtered_public_repertoires_path)
+        makedir_if_not_exists(filtered_public_repertoires_path, fail_if_exists=True)
         filtered_private_repertoires_path = os.path.join(self.baseline_repertoires_path, "filtered_private_repertoires")
-        makedir_if_not_exists(filtered_private_repertoires_path)
+        makedir_if_not_exists(filtered_private_repertoires_path, fail_if_exists=True)
         split_dataframe(public_df, num_files, filtered_public_repertoires_path)
         split_dataframe(private_df, num_files, filtered_private_repertoires_path)
 

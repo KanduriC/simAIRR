@@ -9,7 +9,11 @@ class SequencePresenceMatrix:
         self.presence_counts_list = presence_counts_list
 
     def _get_random_presence_indices(self, presence_count):
-        return np.random.choice(self.number_of_repertoires, presence_count, replace=False)
+        try:
+            assert presence_count <= self.number_of_repertoires, "Unusual sequence presence count > desired number of repertoires returned"
+            return np.random.choice(self.number_of_repertoires, presence_count, replace=False)
+        except ValueError as e:
+            print(e)
 
     def _update_seq_presence_matrix(self, presence_count, row_index):
         col_indices = self._get_random_presence_indices(presence_count)
@@ -25,11 +29,11 @@ class SequencePresenceMatrix:
         return [item for sublist in nonzero_seq_indices for item in sublist]
 
 
-if __name__ == '__main__':
-    test_mat = SequencePresenceMatrix(number_of_repertoires=10, presence_counts_list=[2,1,1,4,2,6,1,3,9])
-    print(test_mat.get_repertoire_sequence_presence_indices())
-    # nonzero_seq_indices = [np.where(test_mat.null_matrix[:,i]>0) for i in range(10)]
-    # print(nonzero_seq_indices)
-    # test_df = pd.DataFrame(np.random.randint(0, 100, size=(100, 4)), columns=list('ABCD'))
-    # print("indices are:", nonzero_seq_indices[0][0])
-    # print(test_df.loc[nonzero_seq_indices[i][0]])
+# if __name__ == '__main__':
+#     count_list = [2,1,1,4,2,6,1,3,9]
+#     test_mat = SequencePresenceMatrix(number_of_repertoires=10, presence_counts_list=count_list)
+#     rep_presence_list = test_mat.get_repertoire_sequence_presence_indices()
+#     assert len(rep_presence_list) == 10, f"Number of sequence presence arrays does not match " \
+#                                          f"the desired number of repertoires"
+#     assert len(np.concatenate(rep_presence_list)) == sum(count_list), f"Sum of presence count list does not match " \
+#                                                                       f"the length of implantable indices list"

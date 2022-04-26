@@ -3,6 +3,7 @@ import numpy as np
 from operator import attrgetter
 import os
 import re
+import logging
 from simAIRR.sequence_presence_matrix.SequencePresenceMatrix import SequencePresenceMatrix
 
 
@@ -32,10 +33,7 @@ class ImplantationHelper:
     def write_public_repertoire_chunks(original_repertoire_file, output_files_path,
                                        repertoire_sequence_presence_indices, file_type="pickle"):
         original_file = pd.read_csv(original_repertoire_file, header=None, index_col=None, sep='\t')
-        original_file_chunk_name = re.sub(r"\..*", "", os.path.basename(original_repertoire_file)).replace("rep","chunk")
-        print(original_file_chunk_name)
-        # for rep_pattern in ((".tsv", ""), (".txt", ""), (".csv", ""), ("rep", "chunk")):
-        #     original_file_chunk_name = os.path.basename(original_repertoire_file).replace(*rep_pattern)
+        original_file_chunk_name = re.sub(r"\..*", "", os.path.basename(original_repertoire_file)).replace("rep", "chunk")
         chunk_path = os.path.join(output_files_path, original_file_chunk_name)
         if not os.path.exists(chunk_path):
             os.makedirs(chunk_path)

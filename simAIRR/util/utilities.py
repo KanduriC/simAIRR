@@ -9,19 +9,19 @@ def concatenate_files(files_path, file_pattern):
     found_files = Path(files_path).glob(file_pattern)
     li = []
     for i, filename in enumerate(found_files):
-        print("processing file number:", i)
         fn = pd.read_csv(filename, header=None, sep='\t')
         li.append(fn)
     concatenated_df = pd.concat(li, axis=0, ignore_index=True)
     return concatenated_df, len(li)
 
 
-def makedir_if_not_exists(some_path):
+def makedir_if_not_exists(some_path, fail_if_exists=False):
     if os.path.exists(some_path):
         files = [fn for fn in os.listdir(some_path) if
                  os.path.isfile(os.path.join(some_path, fn))]
         files_exists = f"Output folder may already contain relevant files: {some_path}"
-        assert len(files) == 0, files_exists
+        if fail_if_exists:
+            assert len(files) == 0, files_exists
     else:
         os.makedirs(some_path)
 
@@ -51,6 +51,7 @@ def write_yaml_file(yaml_dict, out_file_path):
     with open(out_file_path, "w+") as yaml_file:
         yaml.dump(yaml_dict, yaml_file)
 
-def merge_dicts(dict1, dict2):
-    merged_dict = {**dict1, **dict2}
+
+def merge_dicts(dicts_list):
+    merged_dict = {k: v for d in dicts_list for k, v in d.items()}
     return merged_dict

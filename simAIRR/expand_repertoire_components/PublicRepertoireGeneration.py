@@ -61,10 +61,10 @@ class PublicRepertoireGeneration:
         self.multi_concatenate_public_repertoire_chunks()
 
 
-if __name__ == '__main__':
-    test_gen = PublicRepertoireGeneration(
-        public_repertoires_path='/Users/kanduric/Desktop/simairr_tests/baseline_reps/filtered_public_repertoires',
-        n_threads=2, pgen_count_map_obj=PgenCountMap(number_of_repertoires=10, pgen_count_map_file=
-        '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv'),
-        desired_num_repertoires=10)
-    test_gen.execute()
+# if __name__ == '__main__':
+#     test_gen = PublicRepertoireGeneration(
+#         public_repertoires_path='/Users/kanduric/Desktop/simairr_tests/baseline_reps/filtered_public_repertoires',
+#         n_threads=2, pgen_count_map_obj=PgenCountMap(number_of_repertoires=10, pgen_count_map_file=
+#         '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv'),
+#         desired_num_repertoires=10)
+#     test_gen.execute()

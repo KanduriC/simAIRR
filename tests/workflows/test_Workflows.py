@@ -1,5 +1,5 @@
 import os.path
-from simAIRR.concatenate_public_private_repertoires.PubPvtRepertoireConcatenation import PubPvtRepConcatenation
+from simAIRR.concatenate_repertoire_components.RepComponentConcatenation import RepComponentConcatenation
 from simAIRR.expand_repertoire_components.PublicRepertoireGeneration import PublicRepertoireGeneration
 from simAIRR.expand_repertoire_components.SignalComponentGeneration import SignalComponentGeneration
 from simAIRR.olga_baseline_gen.OlgaRepertoiresGeneration import OlgaRepertoiresGeneration
@@ -46,6 +46,6 @@ def test_workflow():
         public_repertoires_path=os.path.join(out_path, "filtered_public_repertoires"),
         n_threads=2, pgen_count_map_obj=pgen_count_map, desired_num_repertoires=10)
     pub_rep_gen.execute()
-    rep_concat = PubPvtRepConcatenation(baseline_repertoires_path=out_path, n_threads=2)
-    rep_concat.multi_concatenate_public_private_repertoires()
+    rep_concat = RepComponentConcatenation(baseline_repertoires_path=out_path, n_threads=2)
+    rep_concat.multi_concatenate_repertoire_components()
 

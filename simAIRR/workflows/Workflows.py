@@ -12,12 +12,30 @@ from simAIRR.util.utilities import makedir_if_not_exists, sort_olga_seq_by_pgen
 
 
 class Workflows:
-    def __init__(self, mode: str = None, olga_model: str = None, output_path: str = None, n_sequences=None,
-                 n_repertoires=None, n_threads: int = None, seed: int = None,
+    def __init__(self, mode: str = None, olga_model: str = None, output_path: str = None, n_sequences: int = None,
+                 n_repertoires: int = None, n_threads: int = None, seed: int = None,
                  public_seq_proportion: float = None, public_seq_pgen_count_mapping_file: str = None,
                  signal_pgen_count_mapping_file: str = None,
-                 signal_sequences_file: str = None, positive_label_rate=None, phenotype_burden: int = None,
+                 signal_sequences_file: str = None, positive_label_rate: float = None, phenotype_burden: int = None,
                  phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None):
+        """
+
+        :param mode: str
+        :param olga_model: str
+        :param output_path: str
+        :param n_sequences: int
+        :param n_repertoires: int
+        :param n_threads: int
+        :param seed: int
+        :param public_seq_proportion: float
+        :param public_seq_pgen_count_mapping_file: str
+        :param signal_pgen_count_mapping_file: str
+        :param signal_sequences_file: str
+        :param positive_label_rate: float
+        :param phenotype_burden: int
+        :param phenotype_pool_size: int
+        :param allow_closer_phenotype_burden: bool
+        """
         self.mode = mode
         self.olga_model = olga_model
         self.output_path = output_path

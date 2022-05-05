@@ -3,7 +3,6 @@ import numpy as np
 from operator import attrgetter
 import os
 import re
-import logging
 from simAIRR.sequence_presence_matrix.SequencePresenceMatrix import SequencePresenceMatrix
 
 
@@ -11,6 +10,7 @@ class ImplantationHelper:
 
     @staticmethod
     def get_pgen_intervals(pgen_dat, pgen_count_map_obj):
+        pgen_dat['pgen'] = pgen_dat['pgen'].replace([0], 1.0e-50)
         pgen_dat['pgen_bins'] = pd.cut(np.log10(pgen_dat['pgen']), bins=pgen_count_map_obj.get_pgen_breaks(),
                                        include_lowest=True)
         pgen_dat['pgen_left'] = pgen_dat['pgen_bins'].map(attrgetter('left'))

@@ -1,0 +1,2 @@
+include simAIRR/config_validator/public_seq_pgen_count_map.tsv
+include simAIRR/config_validator/signal_seq_pgen_count_map.tsv

@@ -15,7 +15,7 @@ class OlgaPgenComputation:
     def compute_pgen(self, repertoire_file_path):
         pgen_file_path = os.path.join(self.pgen_files_base_path, 'pgen_' + os.path.basename(repertoire_file_path))
         command = 'olga-compute_pgen --' + self.model + ' -i ' + repertoire_file_path + ' -o ' + pgen_file_path \
-                  + ' --seq_type_out aaseq --v_in 2 --j_in 3 --display_off' + ' >/dev/null 2>&1'
+                  + ' --seq_type_out aaseq --seq_in 1 --v_in 2 --j_in 3 --display_off' + ' >/dev/null 2>&1'
         exit_code = os.system(command)
         if exit_code != 0:
             raise RuntimeError(f"Running olga tool failed:{command}.")

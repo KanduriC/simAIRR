@@ -8,7 +8,7 @@ class OlgaRepertoiresGeneration:
     def __init__(self, model: str, output_file_path: str, n_seq: int, seed: int, n_reps: int, n_threads: int):
         self.model = model
         self.output_file_path = output_file_path
-        self.n_seq = n_seq
+        self.n_seq = n_seq #TODO: use only 65% of desired n_seq to account for increased seq because of public counts
         self.seed = seed
         self.n_reps = n_reps
         self.n_threads = n_threads

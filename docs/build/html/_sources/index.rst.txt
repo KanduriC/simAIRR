@@ -11,6 +11,8 @@ Contents
 
 .. toctree::
 
+   installation
+   usage
    workflows
 
 

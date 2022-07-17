@@ -5,7 +5,7 @@ from multiprocessing import Pool
 
 class OlgaPgenComputation:
     def __init__(self, repertoires_path: str, n_threads: int, model: str):
-        self.repertoires_path = repertoires_path
+        self.repertoires_path = str(repertoires_path)
         self.n_threads = n_threads
         self.model = model
         self.pgen_files_base_path = os.path.join(self.repertoires_path, "pgen_files")

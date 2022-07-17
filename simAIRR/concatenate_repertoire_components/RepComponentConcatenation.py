@@ -8,7 +8,7 @@ from simAIRR.util.utilities import makedir_if_not_exists
 class RepComponentConcatenation:
     def __init__(self, components_type, super_path, n_threads):
         self.components_type = components_type
-        self.super_path = super_path.rstrip('/')
+        self.super_path = str(super_path).rstrip('/')
         self.n_threads = n_threads
 
     def _set_component_specific_paths(self):
@@ -48,16 +48,10 @@ class RepComponentConcatenation:
         if self.components_type == "baseline_and_signal":
             primary_rep_fns = [os.path.basename(rep) for rep in found_primary_reps]
             secondary_rep_fns = [os.path.basename(rep) for rep in found_secondary_reps]
-            metadata_dict = {'filename': primary_rep_fns, 'label_positive': [True if rep in secondary_rep_fns else False for rep in primary_rep_fns]}
+            metadata_dict = {'filename': primary_rep_fns, 'label_positive': [True if rep in secondary_rep_fns else False for rep in primary_rep_fns]} #TODO: write subject_id field also
             metadata_df = pd.DataFrame.from_dict(metadata_dict)
             metadata_df.to_csv(os.path.join(self.super_path, "metadata.csv"))
         else:
             assert len(found_primary_reps) == len(found_secondary_reps)
         pool = Pool(self.n_threads)
         pool.map(self.concatenate_repertoire_components, list(range(len(found_primary_reps))))
-
-
-# if __name__ == '__main__':
-    # test_rep_concat = PubPvtRepConcatenation(super_path='/Users/kanduric/Desktop/simairr_tests'
-    #                                                                    '/baseline_reps/', n_threads=2)
-    # test_rep_concat.multi_concatenate_public_private_repertoires()

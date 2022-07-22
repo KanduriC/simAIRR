@@ -1,6 +1,7 @@
 import logging
 import os
 import pandas as pd
+import shutil
 from simAIRR.concatenate_repertoire_components.RepComponentConcatenation import RepComponentConcatenation
 from simAIRR.expand_repertoire_components.PublicRepertoireGeneration import PublicRepertoireGeneration
 from simAIRR.expand_repertoire_components.SignalComponentGeneration import SignalComponentGeneration
@@ -17,7 +18,8 @@ class Workflows:
                  public_seq_proportion: float = None, public_seq_pgen_count_mapping_file: str = None,
                  signal_pgen_count_mapping_file: str = None,
                  signal_sequences_file: str = None, positive_label_rate: float = None, phenotype_burden: int = None,
-                 phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None):
+                 phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None,
+                 store_intermediate_files: bool = None):
         """
 
         :param mode: str
@@ -53,6 +55,7 @@ class Workflows:
         self.phenotype_burden = phenotype_burden
         self.phenotype_pool_size = phenotype_pool_size
         self.allow_closer_phenotype_burden = allow_closer_phenotype_burden
+        self.store_intermediate_files = store_intermediate_files
 
     def _baseline_repertoire_generation(self):
         olga_reps = OlgaRepertoiresGeneration(model=self.olga_model, output_file_path=self.baseline_reps_path,
@@ -118,6 +121,8 @@ class Workflows:
     def workflow_generate_public_component_corrected_repertoires(self):
         self._baseline_repertoire_generation()
         self._public_component_correction()
+        if not self.store_intermediate_files:
+            shutil.rmtree(self.baseline_reps_path)
 
     def workflow_generate_signal_implanted_repertoires(self):
         signal_generation_status = self._signal_component_generation()
@@ -125,6 +130,9 @@ class Workflows:
             self._baseline_repertoire_generation()
             self._public_component_correction()
             self._simulated_repertoire_generation()
+            if not self.store_intermediate_files:
+                shutil.rmtree(self.baseline_reps_path)
+                shutil.rmtree(os.path.join(self.output_path, "corrected_baseline_repertoires"))
 
     def workflow_assess_signal_feasibility(self):
         self._signal_component_generation()

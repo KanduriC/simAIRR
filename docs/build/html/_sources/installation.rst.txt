@@ -1,24 +1,25 @@
 Installation
 ============
 
-Install using pip:
+Install using pip
 ------------------
 
 .. code-block:: console
 
-   (.venv) $ pip install simAIRR
+   $ pip install simAIRR
 
-Manual installation:
+Manual installation
 --------------------
 
 .. code-block:: console
 
-   (.venv) $ git clone simAIRR
-   (.venv) $ pip install simAIRR/
+   $ git clone simAIRR
+   $ pip install simAIRR/
 
 
-Use simAIRR through Docker:
+Use simAIRR through Docker
+--------------------------
 
 .. code-block:: console
 
-   (.venv) $ pip install simAIRR
+   $ pip install simAIRR

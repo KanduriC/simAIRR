@@ -34,4 +34,5 @@ def test_update_user_config():
     assert updated_config == {'mode': 'public_component_correction', 'olga_model': 'humanTRB',
                               'output_path': './simairr_output', 'n_repertoires': 10, 'seed': 999, 'n_sequences': 20,
                               'n_threads': 2, 'public_seq_proportion': 0.1,
-                              'public_seq_pgen_count_mapping_file': './mock.tsv'}, f"Error: user config update failed"
+                              'public_seq_pgen_count_mapping_file': './mock.tsv',
+                              'store_intermediate_files': False}, f"Error: user config update failed"

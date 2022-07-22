@@ -37,7 +37,7 @@ class ConfigValidator:
     def _get_mode_specific_default_params_dict(self, mode):
         mode_agnostic_dict = {'mode': "signal_implantation", 'olga_model': None,
                               'output_path': os.path.join("./", "simairr_output"), 'n_repertoires': None,
-                              'seed': random.randint(1, 10000)}
+                              'seed': random.randint(1, 10000), 'store_intermediate_files': False}
         baseline_dict = {'n_sequences': None, 'n_threads': None}
         public_component_dict = {'n_threads': None, 'public_seq_proportion': 0.1,
                                  'public_seq_pgen_count_mapping_file': os.path.join(os.path.dirname(__file__),
@@ -63,7 +63,8 @@ class ConfigValidator:
                                              'allowed': ['humanTRA', 'humanTRB', 'humanIGH', 'mouseTRB']},
                               'output_path': {'required': False, 'type': (str, type(None))},
                               'n_repertoires': {'required': True, 'type': int},
-                              'seed': {'required': False, 'type': (int, type(None))}}
+                              'seed': {'required': False, 'type': (int, type(None))},
+                              'store_intermediate_files': {'required': False, 'type': (bool, type(None))}}
         baseline_dict = {'n_sequences': {'required': True, 'type': int}, 'n_threads': {'required': True, 'type': int}}
         public_component_dict = {'n_threads': {'required': True, 'type': int},
                                  'public_seq_proportion': {'required': False, 'type': (float, type(None))},
@@ -113,6 +114,7 @@ class ConfigValidator:
 if __name__ == '__main__':
 #     usr_yaml = {'mode': 'baseline_repertoire_generation', 'olga_model': 'humanTRB', 'n_repertoires': 10,
 #                 'n_sequences': 20, 'n_threads': 2}
-    test_conf = ConfigValidator("ramu")
-    params_dict = test_conf._get_mode_specific_schema_dict(mode="signal_implantation")
-    print(pd.DataFrame.from_dict(params_dict, orient="index"))
+    test_conf = ConfigValidator("/Users/kanduric/Desktop/simairr_config.yaml")
+    params_dict = test_conf.execute()
+    print(params_dict)
+    # print(pd.DataFrame.from_dict(params_dict, orient="index"))

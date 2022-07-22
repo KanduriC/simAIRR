@@ -1,51 +1,100 @@
-import os.path
-from simAIRR.concatenate_repertoire_components.RepComponentConcatenation import RepComponentConcatenation
-from simAIRR.expand_repertoire_components.PublicRepertoireGeneration import PublicRepertoireGeneration
-from simAIRR.expand_repertoire_components.SignalComponentGeneration import SignalComponentGeneration
-from simAIRR.olga_baseline_gen.OlgaRepertoiresGeneration import OlgaRepertoiresGeneration
-from simAIRR.olga_compute_pgen.UniqueSequenceFilter import UniqueSequenceFilter
-from simAIRR.olga_compute_pgen.OlgaPgenComputation import OlgaPgenComputation
-from simAIRR.pgen_count_map.PgenCountMap import PgenCountMap
+import os
 import pandas as pd
+from simAIRR.workflows.Workflows import Workflows
 
-from simAIRR.util.utilities import sort_olga_seq_by_pgen
+
+def prepare_test_data_signal_implantation_workflow():
+    public_seq_pgen_count_map = os.path.abspath(
+        os.path.join(__file__, "../../../simAIRR/config_validator/public_seq_pgen_count_map.tsv"))
+    signal_seq_pgen_count_map = os.path.abspath(
+        os.path.join(__file__, "../../../simAIRR/config_validator/signal_seq_pgen_count_map.tsv"))
+    signal_sequences = pd.DataFrame.from_dict(
+        {'n_seqs': ['TGCAGTGCTAGAGATCTTTACGACAGGGAACTTTGGTCACAGCTGGAGGGAGGGGGTTATGAGCAGTTCTTC',
+                    'TGTGCCACCAGTGATTATCCGACAGGGGGCTACACCTTC',
+                    'TGTGCCAGCAGTGCAATCCTTGGGGGTGGGAGGGCTCCCTACGAGCAGTACTTC',
+                    'TGTGCCAGCAGCAAATTCAGGGGACAGGAAACGGCTCAGCCCCAGCATTTT',
+                    'TGTGCCAGCAGCATCACGGGCGGGAGCCATCAGCCCCAGCATTTT',
+                    'TGTGCCAGCAGAGACTGGCGACAGGCAGATACGCAGTATTTT',
+                    'TGTGCCACCAGTGATTTGCGCACGTGTGAGGGTCAGCCCCAGCATTTT',
+                    'TGCGCCAGCGGGCCATCAGTTGTCGCCACCAAAAACGAGCAGTACTTC',
+                    'TGCGCCAGCAGCCAAGCAATAGATTGGGGGACAGGGGGACAAGAGACCCAGTACTTC',
+                    'TGTGCCAGCAGTTTCAGGTTGAATCAGCCCCAGCATTTT',
+                    'TGTGCCAGCAGTTACCCATTGGGACATGGGGGGAGTAACAGAAGGGGTGGAAACACCATATATTTT',
+                    'TGCATTATCCTGGGGGATCAGCCCCAGCATTTT',
+                    'TGTGCCAGTAGGGCCCCAGCCCGAGAGACGAATGAAAAACTGTTTTTT',
+                    'TGTGCCACCGGGACTAGGGGCAATGAGCAGTTCTTC',
+                    'TGCGCCAGCAGCCAAGAAAAGCGACAGAAAGGGAACACTGAAGCTTTCTTT',
+                    'TGTGCCAGCAGCCTAATCCTTGCCCCCCGGGACAGGAGAAGCAACACTGAAGCTTTCTTT',
+                    'TGTGCCAGCAGCCAAGTCTCCGGGGGACAGACTGAAGCTTTCTTT',
+                    'TGTGCCAGCAGTTACTCGATACGGGGGACAGAGGAGCAGTACTTC',
+                    'TGTGCCAGCAGTTTAGGGTTATGTGCTATCTCACACGAGCAGTACTTC',
+                    'TGTGCCAGCAGCACATCAGGGACCACGAACACTGAAGCTTTCTTT'],
+         'a_seqs': ['CSARDLYDRELWSQLEGGGYEQFF',
+                    'CATSDYPTGGYTF',
+                    'CASSAILGGGRAPYEQYF',
+                    'CASSKFRGQETAQPQHF',
+                    'CASSITGGSHQPQHF',
+                    'CASRDWRQADTQYF',
+                    'CATSDLRTCEGQPQHF',
+                    'CASGPSVVATKNEQYF',
+                    'CASSQAIDWGTGGQETQYF',
+                    'CASSFRLNQPQHF',
+                    'CASSYPLGHGGSNRRGGNTIYF',
+                    'CIILGDQPQHF',
+                    'CASRAPARETNEKLFF',
+                    'CATGTRGNEQFF',
+                    'CASSQEKRQKGNTEAFF',
+                    'CASSLILAPRDRRSNTEAFF',
+                    'CASSQVSGGQTEAFF',
+                    'CASSYSIRGTEEQYF',
+                    'CASSLGLCAISHEQYF',
+                    'CASSTSGTTNTEAFF'],
+         'v_genes': ['TRBV20-1', 'TRBV24-1', 'TRBV6-1', 'TRBV13', 'TRBV7-3', 'TRBV28', 'TRBV24-1',
+                     'TRBV10-1', 'TRBV4-1', 'TRBV6-6', 'TRBV6-2', 'TRBV20-1', 'TRBV19', 'TRBV7-9',
+                     'TRBV4-3', 'TRBV13', 'TRBV3-1', 'TRBV6-5', 'TRBV27', 'TRBV7-9'],
+         'j_genes': ['TRBJ2-1', 'TRBJ1-2', 'TRBJ2-7', 'TRBJ1-5', 'TRBJ1-5', 'TRBJ2-3',
+                     'TRBJ1-5', 'TRBJ2-7', 'TRBJ2-5', 'TRBJ1-5', 'TRBJ1-3', 'TRBJ1-5',
+                     'TRBJ1-4', 'TRBJ2-1', 'TRBJ1-1', 'TRBJ1-1', 'TRBJ1-1', 'TRBJ2-7',
+                     'TRBJ2-7', 'TRBJ1-1']})
+    user_config_dict = {'mode': 'signal_implantation',
+                        'olga_model': 'humanTRB',
+                        'output_path': None,
+                        'n_repertoires': 10,
+                        'seed': 1234,
+                        'n_sequences': 10,
+                        'n_threads': 2,
+                        'public_seq_proportion': 0.1,
+                        'public_seq_pgen_count_mapping_file': public_seq_pgen_count_map,
+                        'signal_pgen_count_mapping_file': signal_seq_pgen_count_map,
+                        'signal_sequences_file': None,
+                        'positive_label_rate': 0.5,
+                        'phenotype_burden': 2,
+                        'phenotype_pool_size': None,
+                        'allow_closer_phenotype_burden': True,
+                        'store_intermediate_files': True}
+    return user_config_dict, signal_sequences
 
 
-def test_workflow():
-    """
-    Given a signal sequences file (in strictly olga format) and optionally a signal_pgen_count mapping file,
-    first compute pgen of signal sequences using OlgaPgenComputation.compute_pgen and instantiate a pgen_count_map based
-    on signal_pgen_count_mapping and user-defined dataset_implantation_rate, generate multiple signal files using PublicRepertoireGeneration class.
+def test_signal_implantation_workflow(tmp_path):
+    out_path = tmp_path / "workflow_output"
+    user_config_dict, signal_sequences = prepare_test_data_signal_implantation_workflow()
+    signal_file_path = os.path.join(tmp_path, 'signal_sequences.tsv')
+    signal_sequences.to_csv(signal_file_path, index=None, header=None, sep='\t')
+    user_config_dict['signal_sequences_file'] = signal_file_path
+    user_config_dict['output_path'] = out_path
+    desired_workflow = Workflows(**user_config_dict)
+    desired_workflow.execute()
+    print(tmp_path)
 
-    :param public_seq_pgen_count_mapping:
-    :param signal_pgen_count_mapping:
-    :param olga_model:
-    :param outdir_path:
-    :param n_sequences:
-    :param n_repertoires:
-    :param public_seq_proportion:
-    :param seed:
-    :param n_threads:
-    :param signal_sequences_file:
-    :param positive_label_rate:
-    :param phenotype_burden:
-    :param phenotype_pool_size:
-    """
-    out_path = "/Users/kanduric/Desktop/simairr_tests/baseline_reps/"
-    olga_reps = OlgaRepertoiresGeneration(model='humanTRB', output_file_path=out_path,
-                                          n_seq=100, seed=1234,
-                                          n_reps=10, n_threads=2)
-    olga_reps.olga_generate_multiple_repertoires()
-    seq_filter = UniqueSequenceFilter(baseline_repertoires_path=out_path, public_sequence_proportion=0.1, seed=1234)
-    seq_filter.write_unique_public_and_private_repertoire_components()
-    comp_pgen = OlgaPgenComputation(os.path.join(out_path, "filtered_public_repertoires"), n_threads=3, model='humanTRB')
-    comp_pgen.multi_compute_pgen()
-    pgen_count_map = PgenCountMap(number_of_repertoires=10, pgen_count_map_file=
-    '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_pgen_to_counts_mapping_with_vj.tsv')
-    pub_rep_gen = PublicRepertoireGeneration(
-        public_repertoires_path=os.path.join(out_path, "filtered_public_repertoires"),
-        n_threads=2, pgen_count_map_obj=pgen_count_map, desired_num_repertoires=10)
-    pub_rep_gen.execute()
-    rep_concat = RepComponentConcatenation(baseline_repertoires_path=out_path, n_threads=2)
-    rep_concat.multi_concatenate_repertoire_components()
 
+# def test_signal_feasibility_assessment_workflow(tmp_path):
+#     out_path = tmp_path / "workflow_output"
+#     user_config_dict, signal_sequences = prepare_test_data_signal_implantation_workflow()
+#     signal_file_path = os.path.join(tmp_path, 'signal_sequences.tsv')
+#     signal_sequences.to_csv(signal_file_path, index=None, header=None, sep='\t')
+#     user_config_dict['signal_sequences_file'] = signal_file_path
+#     user_config_dict['output_path'] = out_path
+#     user_config_dict['mode'] = "signal_feasibility_assessment"
+#     desired_workflow = Workflows(**user_config_dict)
+#     desired_workflow.execute()
+#     print(tmp_path)

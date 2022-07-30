@@ -1,0 +1,63 @@
+Tutorials
+=========
+
+Configuration format
+-------------------------
+
+simAIRR provides a command-line interface. The configuration for simAIRR's simulations are to be supplied through a flat config file in `YAML format <https://en.wikipedia.org/wiki/YAML>`_. The snippets below show examples of the configuration for different usage modes of simAIRR. See :ref:`configuration_table` for description and default settings of parameters.
+
+Signal implantation mode (default settings)
+-----------------------------------------------
+
+In the example specification below, since no values were supplied for the non-required arguments, default settings will be used for some parameters. See :ref:`configuration_table` for default settings of other parameters.
+
+.. code-block:: YAML
+
+    mode: signal_feasibility_assessment
+    olga_model: humanTRB
+    n_repertoires: 10
+    n_sequences: 10
+    n_threads: 2
+    signal_sequences_file: /path/to/ground_truth_signal_sequences.tsv
+    phenotype_burden: 3
+
+Signal implantation mode (more customisation)
+-------------------------------------------------
+
+.. code-block:: YAML
+
+    mode: signal_implantation
+    olga_model: humanTRB
+    output_path: /path/to/output/directory
+    n_repertoires: 10
+    seed: 1234
+    store_intermediate_files: True
+    n_sequences: 10
+    n_threads: 2
+    public_seq_proportion: 0.08 # 8% of the total unique sequences will be shared across repertoires
+    public_seq_pgen_count_mapping_file: /path/to/public_seq_pgen_count_mapping.tsv
+    signal_pgen_count_mapping_file: /path/to/signal_pgen_count_mapping.tsv
+    signal_sequences_file: /path/to/ground_truth_signal_sequences.tsv
+    positive_label_rate: 0.3 # 30% of the total repertoires will receive signal implantation
+    phenotype_burden: 3
+    phenotype_pool_size: 100 # use only any 100 of the total supplied sequences as a signal superset
+    allow_closer_phenotype_burden: False
+
+Signal feasibility assessment mode
+-----------------------------------
+
+- It is possible that user-supplied signal sequences cannot be sufficient to meet the user-desired specifications of implantation statistics including desired phenotype burden, number of positive class-labeled repertoires and so on based on realistic levels of population incidence given the generation probability.
+- In such a case, signal_implantation mode will not succeed in generating simulated repertoires. Rather, guidance will be provided on the signal implantation statistics (what is realistically possible) that will help the user to either tune the simulation parameters or supply a different set of signal sequences or both.
+- To help with this process of fine-tuning a set of signal sequences file and parameters of simulation, signal_feasibility_assessment mode coule be used. All the parameters of signal_implantation mode and signal_feasibility_assessment mode are identical. The only difference is that in signal_implantation mode, if implantation was deemed feasible, it will proceed with expensive computation steps of baseline repertoire generation and public component correction, whereas the signal_feasibility_assessment mode will stop even if the implantation was deemed feasible.
+
+pgen_count_mapping file format
+-------------------------------
+
+- For both the signal sequences and remaining public sequences, user could supply custom empirical relation between generation probability and population incidence. The file format for both of those files is shown below. The file should be tab-delimited with required fields: "pgen_left", "pgen_right",	"sample_size_prop_left", "sample_size_prop_right", "prob".
+- To prepare such files based on a dataset of interest, one should compute empirical probabilities (prob) of observing sequences within a range of population incidence levels (sample_size_prop_left and sample_size_prop_right) for a given range of generation probability (pgen_left and pgen_right).
+- An example of such file is shown below:
+
+.. csv-table:: pgen_count_mapping file format and example
+    :file: public_seq_pgen_count_map.tsv
+    :header-rows: 1
+    :delim: 0x00000009

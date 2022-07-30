@@ -8,9 +8,10 @@ from simAIRR.workflows.Workflows import Workflows
 
 
 parser = argparse.ArgumentParser(prog='simAIRR')
-parser.add_argument('-i', '--specification_path', help='path to YAML specification file describing the desired parameters',
-                    required=True)
-parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.1', help='check the version of simAIRR tool')
+parser.add_argument('-i', '--specification_path', help='path to YAML specification file describing the desired '
+                                                       'parameters', required=True)
+parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.1', help='check the version of simAIRR '
+                                                                                      'tool')
 args = parser.parse_args()
 
 

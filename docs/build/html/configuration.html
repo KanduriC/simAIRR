@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration manual &mdash; simAIRR  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User guide" href="userguide.html" />
+    <link rel="prev" title="Tool overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simAIRR
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Tool overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simAIRR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Configuration manual</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-manual">
+<h1>Configuration manual<a class="headerlink" href="#configuration-manual" title="Permalink to this headline"></a></h1>
+<span id="configuration-table"></span><table class="colwidths-given docutils align-default" id="id1">
+<caption><span class="caption-text"><strong>simAIRR arguments</strong></span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 33%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>One of the four possible modes to use simAIRR</p></td>
+<td><p>str</p></td>
+<td><p>True</p></td>
+<td><p>None; Legal options:</p>
+<ul class="simple">
+<li><p>‘baseline_repertoire_generation’</p></li>
+<li><p>‘public_component_correction’</p></li>
+<li><p>‘signal_implantation’</p></li>
+<li><p>‘signal_feasibility_assessment’</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>olga_model</p></td>
+<td><p>One of the four possible V(D)J recombination models supplied with Olga tool</p></td>
+<td><p>str</p></td>
+<td><p>True</p></td>
+<td><p>None; Legal options:</p>
+<ul class="simple">
+<li><p>‘humanTRA’</p></li>
+<li><p>‘humanTRB’</p></li>
+<li><p>‘humanIGH’</p></li>
+<li><p>‘mouseTRB’</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>output_path</p></td>
+<td><p>Path to the output directory</p></td>
+<td><p>str</p></td>
+<td><p>False</p></td>
+<td><p>./simairr_output</p></td>
+</tr>
+<tr class="row-odd"><td><p>n_repertoires</p></td>
+<td><p>Number of desired repertoires</p></td>
+<td><p>int</p></td>
+<td><p>True</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>seed</p></td>
+<td><p>A seed to be set if simulations need to be reproducible</p></td>
+<td><p>int</p></td>
+<td><p>False</p></td>
+<td><p>No reproducible seed</p></td>
+</tr>
+<tr class="row-odd"><td><p>store_intermediate_files</p></td>
+<td><p>Whether to store all the intermediate files</p></td>
+<td><p>bool</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>n_sequences</p></td>
+<td><p>Approximate and minimum number of sequences desired in each repertoire</p></td>
+<td><p>int</p></td>
+<td><p>True</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p>n_threads</p></td>
+<td><p>Number of processes (reduces execution time at the expense of using more of the available CPUs</p></td>
+<td><p>int</p></td>
+<td><p>True</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>public_seq_proportion</p></td>
+<td><p>The proportion of the total unique sequences in repertoire dataset to be shared across repertoires (a value between 0 and 1)</p></td>
+<td><p>float</p></td>
+<td><p>False</p></td>
+<td><p>0.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>public_seq_pgen_count_mapping_file</p></td>
+<td><p>Path to the file in the suggested format with empirical relation between generation probability and population incidence of public sequences</p></td>
+<td><p>str</p></td>
+<td><p>False</p></td>
+<td><p>Empirical relation derived based on public sequence data from Emerson et al., 2017</p></td>
+</tr>
+<tr class="row-even"><td><p>signal_pgen_count_mapping_file</p></td>
+<td><p>Path to the file in the suggested format with empirical relation between generation probability and population incidence of signal sequences</p></td>
+<td><p>str</p></td>
+<td><p>False</p></td>
+<td><p>Empirical relation derived based on reported signal data from Emerson et al., 2017</p></td>
+</tr>
+<tr class="row-odd"><td><p>signal_sequences_file</p></td>
+<td><p>Path to the file with signal sequences (in OLGA format)</p></td>
+<td><p>str</p></td>
+<td><p>True</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>positive_label_rate</p></td>
+<td><p>Proportion of desired repertoires to receive signal implantation</p></td>
+<td><p>float</p></td>
+<td><p>False</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>phenotype_burden</p></td>
+<td><p>Average number of signal sequences each positive class labeled repertoire should carry</p></td>
+<td><p>int</p></td>
+<td><p>True</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>phenotype_pool_size</p></td>
+<td><p>Desired number of sequences to be used for signal implantation (if a large pool of sequences are supplied initially)</p></td>
+<td><p>int</p></td>
+<td><p>False</p></td>
+<td><p>Minimum number of sequences sufficient to meet desired phenotype burden will be chosen</p></td>
+</tr>
+<tr class="row-odd"><td><p>allow_closer_phenotype_burden</p></td>
+<td><p>If signal implantation was found infeasible precisely at the desired phenotype burden, whether to allow signal implantation at a closer phenotype burden</p></td>
+<td><p>bool</p></td>
+<td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="Tool overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="userguide.html" class="btn btn-neutral float-right" title="User guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chakravarthi Kanduri.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

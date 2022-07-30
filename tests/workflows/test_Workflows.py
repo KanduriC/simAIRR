@@ -75,6 +75,7 @@ def prepare_test_data_signal_implantation_workflow():
     return user_config_dict, signal_sequences
 
 
+# this covers all the other workflows
 def test_signal_implantation_workflow(tmp_path):
     out_path = tmp_path / "workflow_output"
     user_config_dict, signal_sequences = prepare_test_data_signal_implantation_workflow()
@@ -84,17 +85,7 @@ def test_signal_implantation_workflow(tmp_path):
     user_config_dict['output_path'] = out_path
     desired_workflow = Workflows(**user_config_dict)
     desired_workflow.execute()
-    print(tmp_path)
-
-
-# def test_signal_feasibility_assessment_workflow(tmp_path):
-#     out_path = tmp_path / "workflow_output"
-#     user_config_dict, signal_sequences = prepare_test_data_signal_implantation_workflow()
-#     signal_file_path = os.path.join(tmp_path, 'signal_sequences.tsv')
-#     signal_sequences.to_csv(signal_file_path, index=None, header=None, sep='\t')
-#     user_config_dict['signal_sequences_file'] = signal_file_path
-#     user_config_dict['output_path'] = out_path
-#     user_config_dict['mode'] = "signal_feasibility_assessment"
-#     desired_workflow = Workflows(**user_config_dict)
-#     desired_workflow.execute()
-#     print(tmp_path)
+    simulated_files_path = os.path.join(out_path, "simulated_repertoires")
+    sim_files = [fn for fn in os.listdir(simulated_files_path) if
+                 os.path.isfile(os.path.join(simulated_files_path, fn))]
+    assert len(sim_files) == user_config_dict['n_repertoires']

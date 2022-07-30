@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User guide &mdash; simAIRR  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Configuration manual" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simAIRR
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Tool overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration manual</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-format">Configuration format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#signal-implantation-mode-without-much-customisation">Signal implantation mode (without much customisation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#signal-implantation-mode-more-customisation">Signal implantation mode (more customisation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#signal-feasibility-assessment-mode">Signal feasibility assessment mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#baseline-repertoires-generation">Baseline repertoires generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#public-component-correction">Public component correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pgen-count-mapping-file-format">pgen_count_mapping file format</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simAIRR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>User guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/userguide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="user-guide">
+<h1>User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline"></a></h1>
+<section id="configuration-format">
+<h2>Configuration format<a class="headerlink" href="#configuration-format" title="Permalink to this headline"></a></h2>
+<p>simAIRR provides a command-line interface. The configuration for simAIRR’s simulations are to be supplied through a flat config file in <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">YAML format</a>. The snippets below show examples of the configuration for different usage modes of simAIRR. See <a class="reference internal" href="configuration.html#configuration-table"><span class="std std-ref">simAIRR arguments</span></a> for description and default settings of parameters.</p>
+</section>
+<section id="signal-implantation-mode-without-much-customisation">
+<h2>Signal implantation mode (without much customisation)<a class="headerlink" href="#signal-implantation-mode-without-much-customisation" title="Permalink to this headline"></a></h2>
+<p>In the example specification below, since no values were supplied for the non-required arguments, default settings will be used for some parameters (that are not shown in the snippet below). See <a class="reference internal" href="configuration.html#configuration-table"><span class="std std-ref">simAIRR arguments</span></a> for default settings of other parameters.</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">signal_feasibility_assessment</span><span class="w"></span>
+<span class="nt">olga_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">humanTRB</span><span class="w"></span>
+<span class="nt">n_repertoires</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="nt">n_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="nt">signal_sequences_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/ground_truth_signal_sequences.tsv</span><span class="w"></span>
+<span class="nt">phenotype_burden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="signal-implantation-mode-more-customisation">
+<h2>Signal implantation mode (more customisation)<a class="headerlink" href="#signal-implantation-mode-more-customisation" title="Permalink to this headline"></a></h2>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">signal_implantation</span><span class="w"></span>
+<span class="nt">olga_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">humanTRB</span><span class="w"></span>
+<span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/output/directory</span><span class="w"></span>
+<span class="nt">n_repertoires</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="nt">seed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1234</span><span class="w"></span>
+<span class="nt">store_intermediate_files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"></span>
+<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="nt">n_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="nt">public_seq_proportion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.08</span><span class="w"> </span><span class="c1"># 8% of the total unique sequences will be shared across repertoires</span><span class="w"></span>
+<span class="nt">public_seq_pgen_count_mapping_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/public_seq_pgen_count_mapping.tsv</span><span class="w"></span>
+<span class="nt">signal_pgen_count_mapping_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/signal_pgen_count_mapping.tsv</span><span class="w"></span>
+<span class="nt">signal_sequences_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/ground_truth_signal_sequences.tsv</span><span class="w"></span>
+<span class="nt">positive_label_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w"> </span><span class="c1"># 30% of the total repertoires will receive signal implantation</span><span class="w"></span>
+<span class="nt">phenotype_burden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<span class="nt">phenotype_pool_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># use only any 100 of the total supplied sequences as a signal superset</span><span class="w"></span>
+<span class="nt">allow_closer_phenotype_burden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="signal-feasibility-assessment-mode">
+<h2>Signal feasibility assessment mode<a class="headerlink" href="#signal-feasibility-assessment-mode" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>It is possible that user-supplied signal sequences cannot be sufficient to meet the user-desired specifications of implantation statistics including desired phenotype burden, number of positive class-labeled repertoires and so on based on realistic levels of population incidence given the generation probability.</p></li>
+<li><p>In such a case, <cite>signal_implantation</cite> mode will not succeed in generating simulated repertoires. Rather, guidance will be provided on the signal implantation statistics (what is realistically possible) that will help the user to either tune the simulation parameters or supply a different set of signal sequences or both.</p></li>
+<li><p>To help with this process of fine-tuning a set of signal sequences file and parameters of simulation, <cite>signal_feasibility_assessment</cite> mode coule be used. All the parameters of <cite>signal_implantation</cite> mode and <cite>signal_feasibility_assessment</cite> mode are identical. The only difference is that in <cite>signal_implantation</cite> mode, if implantation was deemed feasible, it will proceed with expensive computation steps of baseline repertoire generation and public component correction, whereas the <cite>signal_feasibility_assessment</cite> mode will stop even if the implantation was deemed feasible.</p></li>
+</ul>
+</section>
+<section id="baseline-repertoires-generation">
+<h2>Baseline repertoires generation<a class="headerlink" href="#baseline-repertoires-generation" title="Permalink to this headline"></a></h2>
+<p>Since the <cite>signal_implantation</cite> mode involves a sequence of steps that also involves baseline repertoires generation, this functionality is also made available to be run in a separate mode. Although generation of baseline repertoires can be accomplished with a few lines of code around existing tools, the parallelised version of this functionality implemented in <cite>baseline_repertoire_generation</cite> mode may turn out to be useful.</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">baseline_repertoire_generation</span><span class="w"></span>
+<span class="nt">olga_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">humanTRB</span><span class="w"></span>
+<span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/output/directory</span><span class="w"></span>
+<span class="nt">n_repertoires</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"></span>
+<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="nt">n_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="public-component-correction">
+<h2>Public component correction<a class="headerlink" href="#public-component-correction" title="Permalink to this headline"></a></h2>
+<p>When synthetic AIRR datasets are generated using sampling from know V(D)J recombination models using existing tools, the resulting repertoires represent naive repertoires that have not experienced any antigen events. Thus, the proportion of public (shared) sequences in such AIRR datasets will be lower than what is observed in experimental AIRR datasets of antigen-experienced repertoires. To match real-world experimental datasets in terms of public sequences, simAIRR’s workflows include a public component correction step, where a fraction of the total unique sequences in the synthetic AIRR dataset (<cite>public_seq_proportion</cite>) will be forced to be shared across repertoires. The sharing pattern will be determined based on empirically learnt relation between generation probability and population incidence of sequences. With sampling from known V(D)J recombination models, one cannot exclude the possibility of observing same sequence twice; <cite>public_component_correction</cite> mode filters out duplicate sequences before making the sequences public.</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">baseline_repertoire_generation</span><span class="w"></span>
+<span class="nt">olga_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">humanTRB</span><span class="w"></span>
+<span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/output/directory</span><span class="w"></span>
+<span class="nt">n_repertoires</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"></span>
+<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="nt">n_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="nt">public_seq_proportion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12</span><span class="w"> </span><span class="c1"># 12% of the total unique sequences will be shared across repertoires. Default is 10% if this argument is not supplied.</span><span class="w"></span>
+<span class="nt">public_seq_pgen_count_mapping_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/public_seq_pgen_count_mapping.tsv</span><span class="w"> </span><span class="c1"># default is a real-world experimental dataset calibrated mapping that is included with simAIRR</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="pgen-count-mapping-file-format">
+<h2>pgen_count_mapping file format<a class="headerlink" href="#pgen-count-mapping-file-format" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>For both the signal sequences and remaining public sequences, user could supply custom empirical relation between generation probability and population incidence. The file format for both of those files is shown below. The file should be tab-delimited with required fields: <cite>“pgen_left”, “pgen_right”, “sample_size_prop_left”, “sample_size_prop_right”, “prob”</cite>.</p></li>
+<li><p>To prepare such files based on a dataset of interest, one should compute empirical probabilities (<cite>prob</cite>) of observing sequences within a range of population incidence levels (<cite>sample_size_prop_left</cite> and <cite>sample_size_prop_right</cite>) for a given range of generation probability (<cite>pgen_left</cite> and <cite>pgen_right</cite>).</p></li>
+<li><p>An example of such file is shown below:</p></li>
+</ul>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">pgen_count_mapping file format and example</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>pgen_left</p></th>
+<th class="head"><p>pgen_right</p></th>
+<th class="head"><p>sample_size_prop_left</p></th>
+<th class="head"><p>sample_size_prop_right</p></th>
+<th class="head"><p>prob</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.8867159551633675</p></td>
+</tr>
+<tr class="row-odd"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.04817553064631529</p></td>
+</tr>
+<tr class="row-even"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.025280228953016935</p></td>
+</tr>
+<tr class="row-odd"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.022776055330312427</p></td>
+</tr>
+<tr class="row-even"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.010255187216789887</p></td>
+</tr>
+<tr class="row-odd"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.004889100882423086</p></td>
+</tr>
+<tr class="row-even"><td><p>-0.001</p></td>
+<td><p>1e-20</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.0019079418077748629</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.9316377432726761</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.03456755427527577</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.01352490690648493</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.012225110658329236</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0036183517178388254</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.002845499894611115</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-20</p></td>
+<td><p>1e-15</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.0015808332747839528</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.8809934274323887</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.0603652623639694</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.026640448227561685</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.023273354164421937</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.006599504363753905</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.0019663829328736126</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-15</p></td>
+<td><p>1e-14</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.0001616205150307079</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.768952812809976</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.0895800859666525</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.057413442917198056</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.048438902271975816</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.024892541684379575</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.010249870105332766</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-14</p></td>
+<td><p>1e-13</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.00047234424448538097</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.7716265865063461</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.06808060565575595</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.05934090403028279</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0412769984413271</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.03406813627254509</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.02265642395902917</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-13</p></td>
+<td><p>1e-12</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.002950345134713872</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.9637811113220949</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.013495931528718414</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.007609483019319085</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.00584425174589109</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.004486922519709405</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.003966495769774458</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-12</p></td>
+<td><p>1e-11</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.0008158040944926191</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.9675325841713831</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.02028032266705611</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.006322762334892417</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.004386728759275038</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0010441617146431771</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.0003826770681938345</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-11</p></td>
+<td><p>1e-10</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>5.076328455632499e-05</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.8350908568888563</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.07976968571914192</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.036914283085982824</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.035715530564775576</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.009978644525678853</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.0024663183241324764</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-10</p></td>
+<td><p>1e-09</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>6.468089143204572e-05</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.4951827356202455</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.1390661087283864</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.12290976272212115</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.08791235702984151</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.08482276197758802</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.06275295072463237</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-09</p></td>
+<td><p>1e-08</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.00735332319718501</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.019</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.26781019279511525</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.0019299999999999999</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.17710858570927396</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.0512</p></td>
+<td><p>0.943</p></td>
+<td><p>0.16489284123474018</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.019</p></td>
+<td><p>0.14483284651679812</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.0117</p></td>
+<td><p>0.12801895233928157</p></td>
+</tr>
+<tr class="row-even"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00439</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.06279342029019784</p></td>
+</tr>
+<tr class="row-odd"><td><p>1e-08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00586</p></td>
+<td><p>0.00732</p></td>
+<td><p>0.054543161114593064</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration manual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chakravarthi Kanduri.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

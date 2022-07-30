@@ -114,7 +114,9 @@ class ConfigValidator:
 if __name__ == '__main__':
 #     usr_yaml = {'mode': 'baseline_repertoire_generation', 'olga_model': 'humanTRB', 'n_repertoires': 10,
 #                 'n_sequences': 20, 'n_threads': 2}
-    test_conf = ConfigValidator("/Users/kanduric/Desktop/simairr_config.yaml")
-    params_dict = test_conf.execute()
+#     test_conf = ConfigValidator("/Users/kanduric/Desktop/simairr_config.yaml")
+    test_conf = ConfigValidator("ramu")
+    params_dict = test_conf._get_mode_specific_schema_dict('public_component_correction')
     print(params_dict)
-    # print(pd.DataFrame.from_dict(params_dict, orient="index"))
+    pd.set_option('display.max_columns', None)
+    print(pd.DataFrame.from_dict(params_dict, orient="index"))

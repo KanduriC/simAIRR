@@ -42,6 +42,7 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Tool overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration manual</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-simairr">Running simAIRR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-format">Configuration format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#signal-implantation-mode-without-much-customisation">Signal implantation mode (without much customisation)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#signal-implantation-mode-more-customisation">Signal implantation mode (more customisation)</a></li>
@@ -79,9 +80,16 @@
              
   <section id="user-guide">
 <h1>User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline"></a></h1>
+<section id="running-simairr">
+<h2>Running simAIRR<a class="headerlink" href="#running-simairr" title="Permalink to this headline"></a></h2>
+<p>simAIRR can be run through a command-line interface with a single user-supplied parameter - the path to the configuration specification file. Example below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sim_airr -i &lt;path_to_specification_file&gt;
+</pre></div>
+</div>
+</section>
 <section id="configuration-format">
 <h2>Configuration format<a class="headerlink" href="#configuration-format" title="Permalink to this headline"></a></h2>
-<p>simAIRR provides a command-line interface. The configuration for simAIRR’s simulations are to be supplied through a flat config file in <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">YAML format</a>. The snippets below show examples of the configuration for different usage modes of simAIRR. See <a class="reference internal" href="configuration.html#configuration-table"><span class="std std-ref">simAIRR arguments</span></a> for description and default settings of parameters.</p>
+<p>The configuration for simAIRR’s simulations are to be supplied through a flat config file in <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">YAML format</a>. The snippets below show examples of the configuration for different usage modes of simAIRR. See <a class="reference internal" href="configuration.html#configuration-table"><span class="std std-ref">simAIRR arguments</span></a> for description and default settings of parameters.</p>
 </section>
 <section id="signal-implantation-mode-without-much-customisation">
 <h2>Signal implantation mode (without much customisation)<a class="headerlink" href="#signal-implantation-mode-without-much-customisation" title="Permalink to this headline"></a></h2>

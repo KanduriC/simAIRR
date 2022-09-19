@@ -1,10 +1,19 @@
 User guide
 ===========
 
+Running simAIRR
+----------------
+simAIRR can be run through a command-line interface with a single user-supplied parameter - the path to the configuration specification file. Example below:
+
+.. code-block:: console
+
+    $ sim_airr -i <path_to_specification_file>
+
+
 Configuration format
 -------------------------
 
-simAIRR provides a command-line interface. The configuration for simAIRR's simulations are to be supplied through a flat config file in `YAML format <https://en.wikipedia.org/wiki/YAML>`_. The snippets below show examples of the configuration for different usage modes of simAIRR. See :ref:`configuration_table` for description and default settings of parameters.
+The configuration for simAIRR's simulations are to be supplied through a flat config file in `YAML format <https://en.wikipedia.org/wiki/YAML>`_. The snippets below show examples of the configuration for different usage modes of simAIRR. See :ref:`configuration_table` for description and default settings of parameters.
 
 Signal implantation mode (without much customisation)
 -----------------------------------------------

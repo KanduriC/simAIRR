@@ -13,7 +13,7 @@ Manual installation
 
 .. code-block:: console
 
-   $ git clone simAIRR
+   $ git clone https://github.com/KanduriC/simAIRR.git
    $ pip install simAIRR/
 
 

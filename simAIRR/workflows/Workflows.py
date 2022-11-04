@@ -1,6 +1,7 @@
 import logging
 import os
 import pandas as pd
+import numpy as np
 import shutil
 from simAIRR.concatenate_repertoire_components.RepComponentConcatenation import RepComponentConcatenation
 from simAIRR.expand_repertoire_components.PublicRepertoireGeneration import PublicRepertoireGeneration
@@ -19,7 +20,7 @@ class Workflows:
                  signal_pgen_count_mapping_file: str = None,
                  signal_sequences_file: str = None, positive_label_rate: float = None, phenotype_burden: int = None,
                  phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None,
-                 store_intermediate_files: bool = None):
+                 store_intermediate_files: bool = None, export_nt: bool = None):
         """
 
         :param mode: str
@@ -55,6 +56,7 @@ class Workflows:
         self.phenotype_burden = phenotype_burden
         self.phenotype_pool_size = phenotype_pool_size
         self.allow_closer_phenotype_burden = allow_closer_phenotype_burden
+        self.export_nt = export_nt
         self.store_intermediate_files = store_intermediate_files
 
     def _baseline_repertoire_generation(self):
@@ -79,14 +81,15 @@ class Workflows:
                                                  n_threads=self.n_threads, pgen_count_map_obj=pgen_count_map,
                                                  desired_num_repertoires=self.n_repertoires)
         logging.info('Generating public repertoire components based on empirical relationship between pgen and public '
-                     'sequence counts.') 
+                     'sequence counts.')
         pub_rep_gen.execute()
-        rep_concat = RepComponentConcatenation(components_type="public_private", super_path=self.baseline_reps_path, n_threads=self.n_threads)
+        rep_concat = RepComponentConcatenation(components_type="public_private", super_path=self.baseline_reps_path,
+                                               n_threads=self.n_threads)
         logging.info('Concatenating public and private repertoire components')
         rep_concat.multi_concatenate_repertoire_components()
 
     def _signal_component_generation(self):
-        user_signal = pd.read_csv(self.signal_sequences_file, header=None, sep='\t', index_col=None)
+        user_signal = self._parse_and_validate_user_signal()
         self.signal_components_path = os.path.join(self.output_path, "signal_components")
         makedir_if_not_exists(self.signal_components_path, fail_if_exists=True)
         user_signal_file = os.path.join(self.signal_components_path, "user_supplied_signal.tsv")
@@ -105,13 +108,30 @@ class Workflows:
                                                desired_phenotype_burden=self.phenotype_burden, seed=self.seed,
                                                phenotype_pool_size=self.phenotype_pool_size,
                                                allow_closer_phenotype_burden=self.allow_closer_phenotype_burden)
-        logging.info(f'Assessing the feasibility of signal implantation at the desired phenotype burden: {self.phenotype_burden}')
+        logging.info(
+            f'Assessing the feasibility of signal implantation at the desired phenotype burden: {self.phenotype_burden}')
         signal_generation_status_code = signal_gen.generate_signal_components()
         return signal_generation_status_code
 
+    def _parse_and_validate_user_signal(self):
+        user_signal = pd.read_csv(self.signal_sequences_file, header=None, sep='\t', index_col=None)
+        assert user_signal.shape[1] >= 3, "The user-supplied sequence file is expected to contain at least 3 fields " \
+                                          "with aa sequence, v gene and j gene information. Found less than 3 fields."
+        if user_signal.shape[1] == 3:
+            self.export_nt = False
+            user_signal.insert(0, 'nt_seq', "NA")
+        if user_signal.shape[1] == 4:
+            if not user_signal.iloc[:, 0].isnull().any():
+                if np.mean([len(seq) for seq in user_signal.iloc[:, 0]]) < 20:
+                    self.export_nt = False
+            if user_signal.iloc[:, 0].isnull().all():
+                self.export_nt = False
+
+        return user_signal
+
     def _simulated_repertoire_generation(self):
         rep_concat = RepComponentConcatenation(components_type="baseline_and_signal", super_path=self.output_path,
-                                               n_threads=self.n_threads)
+                                               n_threads=self.n_threads, export_nt=self.export_nt)
         logging.info('Concatenating the signal component and baseline repertoire component')
         rep_concat.multi_concatenate_repertoire_components()
 
@@ -144,7 +164,6 @@ class Workflows:
                         "signal_feasibility_assessment": self.workflow_assess_signal_feasibility}
         logging.info(f'Starting the execution of desired workflow: {self.mode}')
         mode_methods.get(self.mode)()
-
 
 # if __name__ == '__main__':
 #     test_flow = Workflows(mode='signal_feasibility_assessment')

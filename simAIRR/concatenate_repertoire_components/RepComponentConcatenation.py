@@ -7,10 +7,11 @@ from simAIRR.util.utilities import makedir_if_not_exists
 
 
 class RepComponentConcatenation:
-    def __init__(self, components_type, super_path, n_threads):
+    def __init__(self, components_type, super_path, n_threads, export_nt=None):
         self.components_type = components_type
         self.super_path = str(super_path).rstrip('/')
         self.n_threads = n_threads
+        self.export_nt = export_nt
         self.proxy_primary_fns = None
 
     def _set_component_specific_paths(self):
@@ -43,6 +44,8 @@ class RepComponentConcatenation:
             except (pd.errors.EmptyDataError, FileNotFoundError) as e:
                 continue
         concatenated_df = pd.concat(dfs_list)
+        if self.export_nt is False:
+            concatenated_df = concatenated_df.drop(concatenated_df.columns[[0]], axis=1)
         concatenated_df.to_csv(concat_fn, header=None, index=None, sep='\t')
 
     def multi_concatenate_repertoire_components(self):
@@ -55,7 +58,7 @@ class RepComponentConcatenation:
             proxy_subject_ids = [secrets.token_hex(16) for i in range(len(found_primary_reps))]
             self.proxy_primary_fns = [subject_id + ".tsv" for subject_id in proxy_subject_ids]
             secondary_rep_fns = [os.path.basename(rep) for rep in found_secondary_reps]
-            metadata_dict = {'subject_id': proxy_subject_ids,'filename': self.proxy_primary_fns,
+            metadata_dict = {'subject_id': proxy_subject_ids, 'filename': self.proxy_primary_fns,
                              'label_positive': [True if rep in secondary_rep_fns else False for rep in primary_rep_fns]}
             metadata_df = pd.DataFrame.from_dict(metadata_dict)
             metadata_df.to_csv(os.path.join(self.super_path, "metadata.csv"))

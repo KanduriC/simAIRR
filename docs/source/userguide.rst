@@ -27,7 +27,7 @@ In the example specification below, since no values were supplied for the non-re
     n_repertoires: 10
     n_sequences: 10
     n_threads: 2
-    signal_sequences_file: /path/to/ground_truth_signal_sequences.tsv
+    signal_sequences_file: /path/to/ground_truth_signal_sequences.tsv #TODO: write about signal sequences file format
     phenotype_burden: 3
 
 Signal implantation mode (more customisation)

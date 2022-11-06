@@ -1,3 +1,0 @@
-import simAIRR.simairr_cli
-
-test_simairr_cli_

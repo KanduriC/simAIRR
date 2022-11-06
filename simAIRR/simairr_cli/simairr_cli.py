@@ -20,17 +20,18 @@ def execute():
     config_validator = ConfigValidator(user_yaml_path=args.specification_path)
     validated_config = config_validator.execute()
     makedir_if_not_exists(validated_config.get('output_path'), fail_if_exists=True)
-    _initialize_logging()
+    log_fn = os.path.join(validated_config.get('output_path'), "log.txt")
+    _initialize_logging(log_file_path=log_fn)
     logging.info('Validation of user-supplied parameter specification completed.')
     desired_workflow = Workflows(**validated_config)
     desired_workflow.execute()
     logging.info('simAIRR workflow execution completed.')
 
 
-def _initialize_logging():
+def _initialize_logging(log_file_path):
     log_format = logging.Formatter('%(asctime)s: %(levelname)s: %(message)s')
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.DEBUG,
-                        filename=os.path.join(validated_config.get('output_path'), "log.txt"), filemode='a')
+                        filename=log_file_path, filemode='a')
     if args.quiet is False:
         stdout_handler = logging.StreamHandler(sys.stdout)
         stdout_handler.setFormatter(log_format)

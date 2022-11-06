@@ -5,7 +5,7 @@ Configuration manual
 
 .. csv-table:: **simAIRR arguments**
  :header: "Argument", "Description", "Type", "Required", "Default"
- :widths: 10 20 5 5 20
+ :widths: 10 10 5 5 10
 
    "mode", "One of the four possible modes to use simAIRR", "str", "True", "
  None; Legal options:
@@ -35,5 +35,10 @@ Configuration manual
     "phenotype_burden", "Average number of signal sequences each positive class labeled repertoire should carry", "int", "True", "None"
     "phenotype_pool_size", "Desired number of sequences to be used for signal implantation (if a large pool of sequences are supplied initially)", "int", "False", "Minimum number of sequences sufficient to meet desired phenotype burden will be chosen"
     "allow_closer_phenotype_burden", "If signal implantation was found infeasible precisely at the desired phenotype burden, whether to allow signal implantation at a closer phenotype burden", "bool", "False", "True"
+    "store_intermediate_files", "whether to store all the intermediate files that were generated and used as the basis for simulated repertoires", "bool", "False", "False"
+    "export_nt", "whether to export nucleotide sequences in simulated repertoires", "bool", "False", "
+ True; Exception:
+
+ * False when no nucleotide sequences supplied in user-supplied signal sequences"
 
 

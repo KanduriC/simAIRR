@@ -74,11 +74,11 @@
 <span id="configuration-table"></span><table class="colwidths-given docutils align-default" id="id1">
 <caption><span class="caption-text"><strong>simAIRR arguments</strong></span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
 <colgroup>
-<col style="width: 17%" />
-<col style="width: 33%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 33%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 25%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
@@ -198,6 +198,22 @@
 <td><p>bool</p></td>
 <td><p>False</p></td>
 <td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><p>store_intermediate_files</p></td>
+<td><p>whether to store all the intermediate files that were generated and used as the basis for simulated repertoires</p></td>
+<td><p>bool</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>export_nt</p></td>
+<td><p>whether to export nucleotide sequences in simulated repertoires</p></td>
+<td><p>bool</p></td>
+<td><p>False</p></td>
+<td><p>True; Exception:</p>
+<ul class="simple">
+<li><p>False when no nucleotide sequences supplied in user-supplied signal sequences</p></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

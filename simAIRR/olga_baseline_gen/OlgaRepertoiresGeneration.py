@@ -23,7 +23,7 @@ class OlgaRepertoiresGeneration:
         out_filename = os.path.join(self.output_file_path, 'rep_' + str(rep) + '.tsv')
         rep_seed = rep + self.seed
         command = 'olga-generate_sequences --' + self.model + ' -o ' + out_filename + ' -n ' + str(
-            self.n_seq) + ' --seed ' + str(rep_seed) + ' >/dev/null 2>&1'
+            self.n_seq) + ' --seed ' + str(rep_seed)
         exit_code = os.system(command)
         if exit_code != 0:
             raise RuntimeError(f"Running olga tool failed:{command}.")

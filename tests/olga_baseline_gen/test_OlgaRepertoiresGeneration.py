@@ -3,8 +3,6 @@ import os
 
 
 def test_olga_repertoires_generation(tmp_path):
-    # out_path = "/Users/kanduric/Desktop/simairr_tests/baseline_reps/"
-    # tmp_path = out_path
     olga_reps = OlgaRepertoiresGeneration(model='humanTRB', output_file_path=tmp_path,
                                           n_seq=9, seed=1234,
                                           n_reps=10, n_threads=2)

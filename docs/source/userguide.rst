@@ -12,7 +12,7 @@ simAIRR can be run through a command-line interface with a single user-supplied 
     $ sim_airr -i <path_to_specification_file>
 
 
-Configuration format
+Configuration file format
 -------------------------
 
 The configuration for simAIRR's simulations are to be supplied through a flat config file in `YAML format <https://en.wikipedia.org/wiki/YAML>`_. The snippets below show examples of the configuration for different usage modes of simAIRR. See :ref:`configuration_table` for description and default settings of parameters.

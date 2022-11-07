@@ -37,21 +37,3 @@ def _initialize_logging(log_file_path):
         stdout_handler.setFormatter(log_format)
         logging.getLogger().addHandler(stdout_handler)
 
-# if __name__ == '__main__':
-#     val_config = ConfigValidator(user_yaml_path='/Users/kanduric/Desktop/simairr_gliph_seq_assessment.yaml').execute()
-#     makedir_if_not_exists(val_config.get('output_path'), fail_if_exists=True)
-#     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.DEBUG,
-#                         filename=os.path.join(val_config.get('output_path'), "log.txt"), filemode='a')
-#     logging.info('Validation of user-supplied parameter specification completed.')
-#     des_workflow = Workflows(**val_config)
-#     des_workflow.execute()
-#     logging.info('simAIRR workflow execution completed.')
-
-# val_config = ConfigValidator(user_yaml_path='/Users/kanduric/Desktop/simairr_config.yaml').execute()
-# makedir_if_not_exists(val_config.get('output_path'), fail_if_exists=True)
-# logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.DEBUG,
-#                     filename=os.path.join(val_config.get('output_path'), "log.txt"), filemode='a')
-# logging.info('Validation of user-supplied parameter specification completed.')
-# des_workflow = Workflows(**val_config)
-# des_workflow.execute()
-# logging.info('simAIRR workflow execution completed.')

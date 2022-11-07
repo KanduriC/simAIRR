@@ -27,7 +27,3 @@ class OlgaRepertoiresGeneration:
         exit_code = os.system(command)
         if exit_code != 0:
             raise RuntimeError(f"Running olga tool failed:{command}.")
-
-# if __name__ == '__main__': olga_reps = OlgaRepertoiresGeneration(model='humanTRB',
-# output_file_path="/Users/kanduric/Desktop/simairr_tests/baseline_reps/", n_seq=10, seed=1234, n_reps=10,
-# n_threads=2) olga_reps.olga_generate_multiple_repertoires()

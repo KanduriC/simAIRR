@@ -1,3 +1,5 @@
+.. _simulation approach:
+
 Tool overview
 =============
 

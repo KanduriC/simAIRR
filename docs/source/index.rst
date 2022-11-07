@@ -13,10 +13,10 @@ Getting started
 
 To get started:
 
-- Read a brief overview of simAIRR's simulation approach here
-- Consult the descriptions of simAIRR workflows' parameters
-- Install simAIRR
-- Consult the user guide for tutorials and examples of different workflows
+- Read a brief overview of simAIRR's simulation approach under :ref:`simulation approach`
+- Consult the descriptions of :ref:`configuration_table`
+- For installation, see :ref:`Install simAIRR`
+- Consult the :ref:`user guide` for tutorials and examples of different workflows
 
 
 Contents

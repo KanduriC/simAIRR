@@ -1,11 +1,8 @@
 import sys
-
-import pandas as pd
 import yaml
 import random
 import os
 from simAIRR.util.utilities import merge_dicts
-from simAIRR.workflows.Workflows import Workflows
 
 
 class ConfigValidator:
@@ -110,14 +107,3 @@ class ConfigValidator:
         self._validate_user_config(config_obj=usr_yaml)
         updated_config = self._update_user_config(mode=usr_yaml['mode'], config_obj=usr_yaml)
         return updated_config
-
-
-if __name__ == '__main__':
-#     usr_yaml = {'mode': 'baseline_repertoire_generation', 'olga_model': 'humanTRB', 'n_repertoires': 10,
-#                 'n_sequences': 20, 'n_threads': 2}
-#     test_conf = ConfigValidator("/Users/kanduric/Desktop/simairr_config.yaml")
-    test_conf = ConfigValidator("ramu")
-    params_dict = test_conf._get_mode_specific_schema_dict('public_component_correction')
-    print(params_dict)
-    pd.set_option('display.max_columns', None)
-    print(pd.DataFrame.from_dict(params_dict, orient="index"))

@@ -4,7 +4,6 @@ import pandas as pd
 import random
 import logging
 from simAIRR.expand_repertoire_components.ImplantationHelper import ImplantationHelper
-from simAIRR.pgen_count_map.PgenCountMap import PgenCountMap
 from simAIRR.util.utilities import write_yaml_file
 
 
@@ -137,15 +136,3 @@ class SignalComponentGeneration:
         else:
             obtained_pool_size, implantation_stats = min(optimal_implantation_stats.items(), key=lambda x: abs(round(x[1][1]/self.desired_num_repertoires) - self.desired_phenotype_burden))
         return obtained_pool_size, implantation_stats
-
-
-# if __name__ == '__main__':
-#     test_gen = SignalComponentGeneration(outdir_path='/Users/kanduric/Desktop/simairr_tests/',
-#                                          pgen_count_map_obj=PgenCountMap(number_of_repertoires=50, pgen_count_map_file=
-#                                          '/Users/kanduric/Documents/Projects/bm_competition/pilot_bm_data/emerson_ground_truth_pgen_to_counts_mapping_with_vj.tsv'),
-#                                          desired_num_repertoires=50, desired_phenotype_burden=3, seed=1234,
-#                                          phenotype_pool_size=50, allow_closer_phenotype_burden=True)
-#     test_gen.generate_signal_components()
-
-    # if pool size is none, check if implantable count meets desired implantation count. Else finish by saying implantation cannot be succeded with currently supplied sequence file.
-    # else if implantable count is greater than desired implantation count, while the implantable count is not within a +/- range of desired implantation count, continue to reduce the pgen intervals array to half and compute average implantable count and break when condition satisfied

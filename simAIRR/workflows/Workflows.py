@@ -164,7 +164,3 @@ class Workflows:
                         "signal_feasibility_assessment": self.workflow_assess_signal_feasibility}
         logging.info(f'Starting the execution of desired workflow: {self.mode}')
         mode_methods.get(self.mode)()
-
-# if __name__ == '__main__':
-#     test_flow = Workflows(mode='signal_feasibility_assessment')
-#     test_flow.execute()

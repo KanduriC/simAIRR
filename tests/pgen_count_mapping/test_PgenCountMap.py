@@ -1,6 +1,5 @@
 import importlib_resources as pkg_resources
 import pytest
-
 from simAIRR.pgen_count_map.PgenCountMap import PgenCountMap
 
 

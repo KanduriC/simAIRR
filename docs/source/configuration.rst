@@ -5,7 +5,7 @@ Configuration manual
 
 .. csv-table:: **simAIRR arguments**
  :header: "Argument", "Description", "Type", "Required", "Default"
- :widths: 10 10 5 5 10
+ :widths: 10 50 5 5 30
 
    "mode", "One of the four possible modes to use simAIRR", "str", "True", "
  None; Legal options:

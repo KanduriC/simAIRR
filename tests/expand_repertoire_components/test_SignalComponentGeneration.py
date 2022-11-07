@@ -2,7 +2,6 @@ from simAIRR.expand_repertoire_components.SignalComponentGeneration import Signa
 from simAIRR.expand_repertoire_components.ImplantationHelper import ImplantationHelper
 from simAIRR.pgen_count_map.PgenCountMap import PgenCountMap
 import pandas as pd
-import os
 import importlib_resources as pkg_resources
 
 

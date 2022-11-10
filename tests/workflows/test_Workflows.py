@@ -88,4 +88,4 @@ def test_signal_implantation_workflow(tmp_path):
     simulated_files_path = os.path.join(out_path, "simulated_repertoires")
     sim_files = [fn for fn in os.listdir(simulated_files_path) if
                  os.path.isfile(os.path.join(simulated_files_path, fn))]
-    assert len(sim_files) == user_config_dict['n_repertoires']
+    assert len(sim_files) == user_config_dict['n_repertoires'] + 1

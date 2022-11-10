@@ -87,17 +87,13 @@
 </section>
 <section id="manual-installation">
 <h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline"></a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/KanduriC/simAIRR.git
-<span class="gp">$ </span>pip install simAIRR/
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install git+https://github.com/KanduriC/simAIRR.git
 </pre></div>
 </div>
 </section>
 <section id="use-simairr-through-docker">
 <h2>Use simAIRR through Docker<a class="headerlink" href="#use-simairr-through-docker" title="Permalink to this headline"></a></h2>
-<ul class="simple">
-<li><p><strong>Does not work yet at the moment</strong></p></li>
-</ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install simAIRR
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run -it -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/wd --name my_container kanduric/simairr:latest sim_airr --help
 </pre></div>
 </div>
 </section>

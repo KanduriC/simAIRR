@@ -12,13 +12,13 @@ simAIRR can be run through a command-line interface with a single user-supplied 
     $ sim_airr -i <path_to_specification_file>
 
 
-Configuration format
--------------------------
+Configuration file format
+--------------------------
 
 The configuration for simAIRR's simulations are to be supplied through a flat config file in `YAML format <https://en.wikipedia.org/wiki/YAML>`_. The snippets below show examples of the configuration for different usage modes of simAIRR. See :ref:`configuration_table` for description and default settings of parameters.
 
 Signal implantation mode (without much customisation)
------------------------------------------------
+------------------------------------------------------
 
 In the example specification below, since no values were supplied for the non-required arguments, default settings will be used for some parameters (that are not shown in the snippet below). See :ref:`configuration_table` for default settings of other parameters.
 
@@ -29,11 +29,14 @@ In the example specification below, since no values were supplied for the non-re
     n_repertoires: 10
     n_sequences: 10
     n_threads: 2
-    signal_sequences_file: /path/to/ground_truth_signal_sequences.tsv #TODO: write about signal sequences file format
+    signal_sequences_file: /path/to/ground_truth_signal_sequences.tsv
     phenotype_burden: 3
 
 Signal implantation mode (more customisation)
--------------------------------------------------
+----------------------------------------------
+
+- See acceptable file formats of signal sequences file :ref:`signal_seq_file_format`
+
 
 .. code-block:: YAML
 
@@ -52,7 +55,8 @@ Signal implantation mode (more customisation)
     positive_label_rate: 0.3 # 30% of the total repertoires will receive signal implantation
     phenotype_burden: 3
     phenotype_pool_size: 100 # use only any 100 of the total supplied sequences as a signal superset
-    allow_closer_phenotype_burden: False
+    allow_closer_phenotype_burden: False # whether to allow signal implantation if the feasible phenotype burden is closer to the user-desired phenotype burden (although it is not exact match)
+    export_nt: False # whether to export nucleotide sequences in the simulated repertoire files
 
 Signal feasibility assessment mode
 -----------------------------------
@@ -76,7 +80,7 @@ Since the `signal_implantation` mode involves a sequence of steps that also invo
     n_threads: 2
 
 Public component correction
----------------------------
+----------------------------
 
 When synthetic AIRR datasets are generated using sampling from know V(D)J recombination models using existing tools, the resulting repertoires represent naive repertoires that have not experienced any antigen events. Thus, the proportion of public (shared) sequences in such AIRR datasets will be lower than what is observed in experimental AIRR datasets of antigen-experienced repertoires. To match real-world experimental datasets in terms of public sequences, simAIRR's workflows include a public component correction step, where a fraction of the total unique sequences in the synthetic AIRR dataset (`public_seq_proportion`) will be forced to be shared across repertoires. The sharing pattern will be determined based on empirically learnt relation between generation probability and population incidence of sequences. With sampling from known V(D)J recombination models, one cannot exclude the possibility of observing same sequence twice; `public_component_correction` mode filters out duplicate sequences before making the sequences public.
 
@@ -91,6 +95,35 @@ When synthetic AIRR datasets are generated using sampling from know V(D)J recomb
     public_seq_proportion: 0.12 # 12% of the total unique sequences will be shared across repertoires. Default is 10% if this argument is not supplied.
     public_seq_pgen_count_mapping_file: /path/to/public_seq_pgen_count_mapping.tsv # default is a real-world experimental dataset calibrated mapping that is included with simAIRR
 
+.. _signal_seq_file_format:
+
+File format of ground truth signal sequences
+---------------------------------------------
+
+The ground truth signal sequences file is expected to be a tab-delimited file with at least 3 columns and without a header line. See below for file formats that are accepted.
+
+- Supplying nucleotide sequences is optional. If nucleotide sequences are not supplied,
+nucleotide sequences are not exported in the simulated repertoires by default. This behavior can be changed with `export_nt` parameter.
+
+.. csv-table:: When including nucleotide sequences
+    :file: with_nt.tsv
+    :header-rows: 0
+    :delim: 0x00000009
+
+.. csv-table:: When not including nucleotide sequences
+    :file: with_empty_nt.tsv
+    :header-rows: 0
+    :delim: 0x00000009
+
+.. csv-table:: When not including nucleotide sequences
+    :file: with_empty_nt_2.tsv
+    :header-rows: 0
+    :delim: 0x00000009
+
+.. csv-table:: When not supplying nucleotide sequences field
+    :file: no_nt.tsv
+    :header-rows: 0
+    :delim: 0x00000009
 
 pgen_count_mapping file format
 -------------------------------

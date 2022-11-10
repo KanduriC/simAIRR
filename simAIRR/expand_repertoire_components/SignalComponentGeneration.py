@@ -1,5 +1,6 @@
 import glob
 import os.path
+import numpy as np
 import pandas as pd
 import random
 import logging
@@ -56,7 +57,7 @@ class SignalComponentGeneration:
                 logging.warning('Feasible phenotype burden not within a closer range of user-desired phenotype burden.')
             else:
                 signal_generation_status_code = 0
-                logging.info('Using closest possible phenotype burden instead ...')
+                logging.info('Using closest possible phenotype burden ...')
         if signal_generation_status_code == 0:
             logging.info('Generating and writing signal component chunks ...')
             original_seqs = pd.read_csv(original_rep_file, header=None, index_col=None, sep='\t')
@@ -67,6 +68,8 @@ class SignalComponentGeneration:
             abs_rep_num = ImplantationHelper.get_absolute_number_of_repertoires(
                 pgen_intervals_list=[pgen_intervals_array[ind] for ind in implantable_seq_subset_indices],
                 pgen_count_map_obj=self.pgen_count_map_obj)
+            np.savetxt(os.path.join(self.signal_components_path, "implanted_sequences_frequencies.txt"),
+                       abs_rep_num, fmt="%s")
             seq_presence_indices = ImplantationHelper.get_repertoire_sequence_presence_indices(
                 desired_num_repertoires=self.desired_num_repertoires, abs_num_of_reps_list=abs_rep_num)
             ImplantationHelper.write_public_repertoire_chunks(original_repertoire_file=filtered_signal_pool_file,
@@ -97,7 +100,7 @@ class SignalComponentGeneration:
                 implantable_seq_subset_indices = subset_seq_indices[sequence_proportion]
             else:
                 sequence_proportion, implantation_count = min(subset_seqs_total_implant_counts.items(),
-                                                              key=lambda k: abs(round(k[1]/self.desired_num_repertoires)-self.desired_phenotype_burden))
+                                                              key=lambda k: abs(round(k[1] / self.desired_num_repertoires) - self.desired_phenotype_burden))
                 implantable_seq_subset_indices = subset_seq_indices[sequence_proportion]
         else:
             implantation_count = self._get_avg_total_implantation_count(pgen_intervals_array)
@@ -120,7 +123,8 @@ class SignalComponentGeneration:
         if self.phenotype_pool_size is None:
             logging.warning('No phenotype pool size is given. Will attempt to determine suitable phenotype pool size.')
             possible_pool_sizes = [round(len(pgen_intervals_array) * prop) for prop in
-                                   [0.01, 0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]] #TODO: enhance this in such a way that iteratively the pool sizes are updated on the fly based on desired phenotype burden falling within a range of pool sizes.
+                                   [0.01, 0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
+                                    1.0]]  # TODO: enhance this in such a way that iteratively the pool sizes are updated on the fly based on desired phenotype burden falling within a range of pool sizes.
         else:
             possible_pool_sizes = [self.phenotype_pool_size]
             logging.info(f'Using the user-defined phenotype pool size {self.phenotype_pool_size}')
@@ -134,5 +138,6 @@ class SignalComponentGeneration:
         if condition_met:
             obtained_pool_size, implantation_stats = min(condition_met.items(), key=lambda x: x[0])
         else:
-            obtained_pool_size, implantation_stats = min(optimal_implantation_stats.items(), key=lambda x: abs(round(x[1][1]/self.desired_num_repertoires) - self.desired_phenotype_burden))
+            obtained_pool_size, implantation_stats = min(optimal_implantation_stats.items(), key=lambda x: abs(
+                round(x[1][1] / self.desired_num_repertoires) - self.desired_phenotype_burden))
         return obtained_pool_size, implantation_stats

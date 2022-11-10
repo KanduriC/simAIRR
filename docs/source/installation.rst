@@ -15,14 +15,13 @@ Manual installation
 
 .. code-block:: console
 
-   $ git clone https://github.com/KanduriC/simAIRR.git
-   $ pip install simAIRR/
+   $ pip install git+https://github.com/KanduriC/simAIRR.git
 
 
 Use simAIRR through Docker
 --------------------------
-- **Does not work yet at the moment**
+
 
 .. code-block:: console
 
-   $ pip install simAIRR
+   $ docker run -it -v $(pwd):/wd --name my_container kanduric/simairr:latest sim_airr --help

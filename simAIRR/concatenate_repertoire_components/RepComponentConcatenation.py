@@ -62,6 +62,7 @@ class RepComponentConcatenation:
                              'label_positive': [True if rep in secondary_rep_fns else False for rep in primary_rep_fns]}
             metadata_df = pd.DataFrame.from_dict(metadata_dict)
             metadata_df.to_csv(os.path.join(self.super_path, "metadata.csv"))
+            metadata_df.to_csv(os.path.join(self.concatenated_reps_path, "metadata.csv"))
         else:
             assert len(found_primary_reps) == len(found_secondary_reps)
         pool = Pool(self.n_threads)

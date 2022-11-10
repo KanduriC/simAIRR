@@ -13,9 +13,9 @@ Getting started
 
 To get started:
 
-- Read a brief overview of simAIRR's :ref:`simulation approach`
+- Read a brief overview of simAIRR's simulation approach under :ref:`simulation approach`
 - Consult the descriptions of :ref:`configuration_table`
-- :ref:`Install simAIRR`
+- For installation, see :ref:`Install simAIRR`
 - Consult the :ref:`user guide` for tutorials and examples of different workflows
 
 

@@ -5,7 +5,7 @@ import pandas as pd
 import importlib_resources as pkg_resources
 
 
-def prepare_test_data(tmp_path, phen_pool_size, write_file=False):
+def prepare_test_data(tmp_path, phen_pool_size, write_file=True):
     simairr_test_path = tmp_path / "simairr_tests"
     rep_file_path = simairr_test_path / "signal_components"
     pgen_file_path = simairr_test_path / "signal_components" / "pgen_files"
@@ -51,11 +51,11 @@ def test__determine_signal_sequence_combination(tmp_path):
     assert implantable_seq_subset_indices == [1]
 
 
-def test_get_signal_seq_combination(tmp_path):
+def test__get_signal_seq_combination(tmp_path):
     test_gen, signal_pgen_count_map, pgen_dat = prepare_test_data(tmp_path=tmp_path, phen_pool_size=None)
     pgen_intervals_array = ImplantationHelper.get_pgen_intervals(pgen_dat=pgen_dat,
                                                                  pgen_count_map_obj=signal_pgen_count_map)
-    obtained_pool_size, implantation_stats = test_gen.get_signal_seq_combination(pgen_intervals_array)
+    obtained_pool_size, implantation_stats = test_gen._get_signal_seq_combination(pgen_intervals_array)
     assert obtained_pool_size == 0
     assert implantation_stats == [0.95, 0, []]
 

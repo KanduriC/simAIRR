@@ -108,10 +108,7 @@ class Workflows:
                                                desired_phenotype_burden=self.phenotype_burden, seed=self.seed,
                                                phenotype_pool_size=self.phenotype_pool_size,
                                                allow_closer_phenotype_burden=self.allow_closer_phenotype_burden)
-        logging.info(
-            f'Assessing the feasibility of signal implantation at the desired phenotype burden: {self.phenotype_burden}')
-        signal_generation_status_code = signal_gen.generate_signal_components()
-        return signal_generation_status_code
+        return signal_gen
 
     def _parse_and_validate_user_signal(self):
         user_signal = pd.read_csv(self.signal_sequences_file, header=None, sep='\t', index_col=None)
@@ -126,7 +123,6 @@ class Workflows:
                     self.export_nt = False
             if user_signal.iloc[:, 0].isnull().all():
                 self.export_nt = False
-
         return user_signal
 
     def _simulated_repertoire_generation(self):
@@ -145,7 +141,8 @@ class Workflows:
             shutil.rmtree(self.baseline_reps_path)
 
     def workflow_generate_signal_implanted_repertoires(self):
-        signal_generation_status = self._signal_component_generation()
+        signal_gen = self._signal_component_generation()
+        signal_generation_status = signal_gen.generate_signal_components()
         if signal_generation_status == 0:
             self._baseline_repertoire_generation()
             self._public_component_correction()
@@ -155,7 +152,8 @@ class Workflows:
                 shutil.rmtree(os.path.join(self.output_path, "corrected_baseline_repertoires"))
 
     def workflow_assess_signal_feasibility(self):
-        self._signal_component_generation()
+        signal_gen = self._signal_component_generation()
+        signal_gen.generate_signal_components(write_signal_components=False)
 
     def execute(self):
         mode_methods = {"baseline_repertoire_generation": self.workflow_generate_baseline_repertoires,

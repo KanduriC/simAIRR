@@ -57,21 +57,3 @@ class PgenCountMap:
         return absolute_number_of_repertoires
 
 
-# if __name__ == '__main__':
-#     import importlib_resources as pkg_resources
-#     with pkg_resources.as_file(
-#             pkg_resources.files("simAIRR.config_validator").joinpath(
-#                 "public_seq_pgen_count_map.tsv")) as count_map_file:
-#         test_map = PgenCountMap(number_of_repertoires=200, pgen_count_map_file=count_map_file)
-#         print(test_map._get_pgen_bin_sample_size_weights())
-#         num_reps = []
-#         for i in range(10):
-#             num_reps.append(test_map.get_absolute_number_of_repertoires((-100, -20)))
-#         print(num_reps, sum(i < 12 for i in num_reps))
-#         assert sum(i < 12 for i in num_reps) >= 0.7*len(num_reps)
-#         with pytest.raises(KeyError) as e:
-#             test_map.get_absolute_number_of_repertoires((-200, -100))
-
-
-
-

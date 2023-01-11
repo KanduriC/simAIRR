@@ -14,7 +14,10 @@ setup(
     license='MIT',
     author='Chakravarthi Kanduri',
     author_email='chakra.kanduri@gmail.com',
-    description='',
+    description='A tool for simulation of antigen-experienced adaptive immune receptor repertoire (AIRR) datasets for '
+                'benchmarking of machine learning (ML) methods.',
+    long_description_content_type="text/markdown",
+    long_description=open("README.md").read(),
     include_package_data=True,
     zip_safe=False,
     entry_points={'console_scripts': ['sim_airr=simAIRR.simairr_cli.simairr_cli:execute']})

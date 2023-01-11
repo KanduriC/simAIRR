@@ -28,7 +28,7 @@ Contents
    installation
    overview
    configuration
-   userguide
+   tutorials
 
 
 ..

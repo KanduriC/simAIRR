@@ -1,6 +1,6 @@
 .. _user guide:
 
-User guide
+Tutorials
 ===========
 
 Running simAIRR
@@ -65,6 +65,8 @@ Signal feasibility assessment mode
 - In such a case, `signal_implantation` mode will not succeed in generating simulated repertoires. Rather, guidance will be provided on the signal implantation statistics (what is realistically possible) that will help the user to either tune the simulation parameters or supply a different set of signal sequences or both.
 - To help with this process of fine-tuning a set of signal sequences file and parameters of simulation, `signal_feasibility_assessment` mode coule be used. All the parameters of `signal_implantation` mode and `signal_feasibility_assessment` mode are identical. The only difference is that in `signal_implantation` mode, if implantation was deemed feasible, it will proceed with expensive computation steps of baseline repertoire generation and public component correction, whereas the `signal_feasibility_assessment` mode will stop even if the implantation was deemed feasible.
 
+.. _baseline repertoires generation:
+
 Baseline repertoires generation
 --------------------------------
 
@@ -94,6 +96,101 @@ When synthetic AIRR datasets are generated using sampling from know V(D)J recomb
     n_threads: 2
     public_seq_proportion: 0.12 # 12% of the total unique sequences will be shared across repertoires. Default is 10% if this argument is not supplied.
     public_seq_pgen_count_mapping_file: /path/to/public_seq_pgen_count_mapping.tsv # default is a real-world experimental dataset calibrated mapping that is included with simAIRR
+
+
+Querying sequences enriched for k-mer like patterns
+----------------------------------------------------
+
+Using simAIRR and the new `bionumpy <https://github.com/bionumpy/bionumpy>`_ library, one could query and retrieve sequences enriched for k-mer like patterns very easily with just a few lines of Python code. Below, we provide a simple Python recipe.
+
+- First, use the simAIRR's :ref:`baseline repertoires generation` mode to generate a large database of sequences. For instance, in the code chunk below, we generate a single file with one million sequences.
+
+.. code-block:: YAML
+
+    mode: baseline_repertoire_generation
+    olga_model: humanTRB
+    output_path: /path/to/output/directory
+    n_repertoires: 1
+    n_sequences: 1000000
+    n_threads: 1
+
+- Alternatively, one could use the sequence database of their choice to query the sequences for k-mer like patterns. The code chunk above is just one example to get a large number of sequences to make queries.
+- Let us assume that the one million sequences that were generated in previous step are stored in a file named ``sequence_database.tsv``.
+- Next, we import relevant functionalities from the bionumpy library to read in the ``sequence_database.tsv``, create a k-mer or wild-card index and querying the sequences.
+- bionumpy works with popular file formats of biological sequence data. Since bionumpy does not know the file format of our ``sequence_database.tsv``, we first need to tell bionumpy that the first two fields of this custom file format are a dna sequence and an amino acid sequence. The code chunk below shows how to do this. This is routine code and can just be copied as shown below.
+
+    >>> from bionumpy.io.delimited_buffers import DelimitedBuffer, get_bufferclass_for_datatype
+    >>> from bionumpy.bnpdataclass import bnpdataclass
+    >>> import bionumpy as bnp
+    >>> from bionumpy.sequence.indexing.kmer_indexing import KmerLookup
+    >>> from bionumpy.sequence.indexing.wildcard_index import WildCardLookup
+
+    >>> @bnpdataclass
+    ... class Olga:
+    ...   dna: bnp.DNAEncoding
+    ...   amino_acid: bnp.AminoAcidEncoding
+    >>> class OlgaBuffer(DelimitedBuffer):
+    ...    dataclass = Olga
+
+- Using the newly created buffer type, we read-in the files with that file format.
+
+    >>> olga_sequence_data = bnp.open(filename="sequence_database.tsv", buffer_type=OlgaBuffer).read()
+    >>> olga_sequence_data
+    Olga with 1000000 entries
+                          dna               amino_acid
+      TGCGCCACCTGGGGGGACGA...               CATWGDEQYF
+      TGTGCCAGCTCACCTACGAA...         CASSPTNSGSNYGYTF
+      TGCGGGCCCGTAATGAACAC...              CGPVMNTEAFF
+      TGTGCCAGCAGTGAAGCGCG...         CASSEARPARMYGYTF
+      TGTGCCAGCAGTAGTGGGAC...          CASSSGTGPDQPQHF
+      TGTGCCAGCAACCTAGCGGG...          CASNLAGKNTGELFF
+      TGTGCCAGCAGCCAACCGGG...         CASSQPGGSGNYGYTF
+      TGCGCCAGCAGCCGCGGCCT...           CASSRGLREETQYF
+      TGTGCCAGCAGCCAAGTCTC...        CASSQVSRQDSSYEQYF
+      TGTGCCAGCAGGCCGGGACA...     CASRPGQGAPGWEDNYGYTF
+
+- We create a Kmer lookup table on the dna field of the file with k=3. Instead the Kmer lookup could have been on the amino acid field.
+
+    >>> dna_3mer_lookup = KmerLookup.create_lookup(olga_sequence_data.dna, k=3)
+    >>> dna_3mer_lookup
+    Lookup on 3-merIndex of 1000000 sequences
+
+We then could retrieve all the sequences that contain a particular k-mer. Here, we ask for all sequences that contain a "TGC".
+
+    >>> tgc_sequences = dna_3mer_lookup.get_sequences("TGC")
+    >>> tgc_sequences
+    encoded_ragged_array(['TGCGCCACCTGGGGGGACGA...',
+                          'TGTGCCAGCTCACCTACGAA...',
+                          'TGCGGGCCCGTAATGAACAC...',
+                          'TGTGCCAGCAGTGAAGCGCG...',
+    ...
+                          'TGTGCCAGCAGTAGTGGGAC...'], AlphabetEncoding('ACGT'))
+
+A recipe for retrieving sequences that contain a pattern with wildcard characters
+----------------------------------------------------------------------------------
+
+- One could also retrieve all the sequences that contain a particular pattern with wildcard characters. For that, we use a `WildCardLookup` instead of a `KmerLookup`. Below, we create a `WildCardLookup` on the amino acid sequences of the file that we read-in.
+
+    >>> aminoacid_wildcard_lookup = WildCardLookup.create_lookup(olga_sequence_data.amino_acid)
+    >>> aminoacid_wildcard_lookup
+    Lookup on WildcardIndex of 1000000 sequences
+
+- We then retrieve all the sequences that contain a pattern like "RG.", where the "." indicates a wildcard character.
+
+    >>> rg_wildcard_sequences = aminoacid_wildcard_lookup.get_sequences("RG.")
+    >>> rg_wildcard_sequences
+    encoded_ragged_array(['CASSRGLREETQYF',
+                          'CASGCRGTSGGASLDEQFF',
+                          'CATSDLGVRRGALIATNEKL...',
+                          'CATRRGYGYTF',
+                          'CATRGAKRIDEQYF',
+                          'CASSLRGQGLLRGNQPQHF',
+                          'CASSFSCLRGESSYNEQFF',
+                          'CASRGLFPQPQHF',
+                          'CASSGCRGGNTEAFF',
+                          'CASSEADRGRKAFF',
+                          'CASRVASRGRDKQPQHF'], AlphabetEncoding('ACDEFGHIKLMNPQRSTVWY'))
+
 
 .. _signal_seq_file_format:
 
@@ -138,3 +235,4 @@ The user is not required to supply this file unless the user desires to generate
     :file: public_seq_pgen_count_map.tsv
     :header-rows: 1
     :delim: 0x00000009
+

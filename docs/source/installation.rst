@@ -5,13 +5,13 @@ Installation
 
 Install using pip
 ------------------
-- **Does not work yet at the moment**
+
 .. code-block:: console
 
    $ pip install simAIRR
 
-Manual installation
---------------------
+Manual installation using git
+------------------------------
 
 .. code-block:: console
 
@@ -20,7 +20,6 @@ Manual installation
 
 Use simAIRR through Docker
 --------------------------
-
 
 .. code-block:: console
 

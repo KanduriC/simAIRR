@@ -49,8 +49,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#signal-feasibility-assessment-mode">Signal feasibility assessment mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#baseline-repertoires-generation">Baseline repertoires generation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#public-component-correction">Public component correction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#querying-sequences-enriched-for-k-mer-like-patterns">Querying sequences enriched for k-mer like patterns</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#a-recipe-for-retrieving-sequences-that-contain-a-pattern-with-wildcard-characters">A recipe for retrieving sequences that contain a pattern with wildcard characters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#querying-sequences-enriched-for-k-mer-like-patterns">Querying sequences enriched for k-mer like patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generation-of-reference-sequences-to-query-against">Generation of reference sequences to query against</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pattern-matching-recipe-using-bionumpy">Pattern matching recipe using bionumpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#presence-of-multiple-motifs-in-sequences">Presence of multiple motifs in sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-using-grep">Recipe using grep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conditioning-on-gene-usage">Conditioning on gene usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wall-time-estimate-for-pattern-matching">Wall time estimate for pattern matching</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#file-format-of-ground-truth-signal-sequences">File format of ground truth signal sequences</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pgen-count-mapping-file-format">pgen_count_mapping file format</a></li>
 </ul>
@@ -169,26 +176,45 @@
 <section id="querying-sequences-enriched-for-k-mer-like-patterns">
 <h2>Querying sequences enriched for k-mer like patterns<a class="headerlink" href="#querying-sequences-enriched-for-k-mer-like-patterns" title="Permalink to this headline"></a></h2>
 <p>Using simAIRR and the new <a class="reference external" href="https://github.com/bionumpy/bionumpy">bionumpy</a> library, one could query and retrieve sequences enriched for k-mer like patterns very easily with just a few lines of Python code. Below, we provide a simple Python recipe.</p>
+<section id="generation-of-reference-sequences-to-query-against">
+<h3>Generation of reference sequences to query against<a class="headerlink" href="#generation-of-reference-sequences-to-query-against" title="Permalink to this headline"></a></h3>
 <ul class="simple">
-<li><p>First, use the simAIRR’s <a class="reference internal" href="#baseline-repertoires-generation"><span class="std std-ref">Baseline repertoires generation</span></a> mode to generate a large database of sequences. For instance, in the code chunk below, we generate a single file with one million sequences.</p></li>
+<li><p>First, use the simAIRR’s <a class="reference internal" href="#baseline-repertoires-generation"><span class="std std-ref">Baseline repertoires generation</span></a> mode to generate a large number of reference sequences to query against. For instance, in the code chunk below, we generate a single file with ten million sequences.</p></li>
 </ul>
 <div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">baseline_repertoire_generation</span><span class="w"></span>
 <span class="nt">olga_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">humanTRB</span><span class="w"></span>
 <span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/output/directory</span><span class="w"></span>
 <span class="nt">n_repertoires</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000000</span><span class="w"></span>
+<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span><span class="w"></span>
 <span class="nt">n_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
 </pre></div>
 </div>
+<p>Note that instead of generating 10 million sequences in a single file, if multiple processes are used using <cite>n_threads</cite> argument (if more CPUs are available), and the n_sequences are split across multiple repertoires using <cite>n_threads</cite> argument, the reference sequence generation will be much quicker. For instance, the following configuration will generate 10 million sequences across 40 files in less than 2 minutes wall time.</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">baseline_repertoire_generation</span><span class="w"></span>
+<span class="nt">olga_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">humanTRB</span><span class="w"></span>
+<span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/output/directory</span><span class="w"></span>
+<span class="nt">n_repertoires</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w"></span>
+<span class="nt">n_sequences</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">250000</span><span class="w"></span>
+<span class="nt">n_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w"></span>
+</pre></div>
+</div>
+<p>To combine them into a single file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat /path/to/output/directory/* &gt; reference_sequences.txt
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Alternatively, one could use the reference sequences of their choice to query the sequences for k-mer like patterns. The code chunks above is just one example to get a large number of sequences to make queries.</p></li>
+<li><p>Let us assume that the ten million sequences that were generated in previous step are stored in a file named <code class="docutils literal notranslate"><span class="pre">reference_sequences.txt</span></code>.</p></li>
+</ul>
+</section>
+<section id="pattern-matching-recipe-using-bionumpy">
+<h3>Pattern matching recipe using bionumpy<a class="headerlink" href="#pattern-matching-recipe-using-bionumpy" title="Permalink to this headline"></a></h3>
 <ul>
-<li><p>Alternatively, one could use the sequence database of their choice to query the sequences for k-mer like patterns. The code chunk above is just one example to get a large number of sequences to make queries.</p></li>
-<li><p>Let us assume that the one million sequences that were generated in previous step are stored in a file named <code class="docutils literal notranslate"><span class="pre">sequence_database.tsv</span></code>.</p></li>
-<li><p>Next, we import relevant functionalities from the bionumpy library to read in the <code class="docutils literal notranslate"><span class="pre">sequence_database.tsv</span></code>, create a k-mer or wild-card index and querying the sequences.</p></li>
-<li><p>bionumpy works with popular file formats of biological sequence data. Since bionumpy does not know the file format of our <code class="docutils literal notranslate"><span class="pre">sequence_database.tsv</span></code>, we first need to tell bionumpy that the first two fields of this custom file format are a dna sequence and an amino acid sequence. The code chunk below shows how to do this. This is routine code and can just be copied as shown below.</p>
+<li><p>Next, we import relevant functionalities from the bionumpy library to read in the <code class="docutils literal notranslate"><span class="pre">reference_sequences.txt</span></code>, create a lookup index and querying the sequences.</p></li>
+<li><p>bionumpy works with popular file formats of biological sequence data. Since bionumpy does not know the file format of our <code class="docutils literal notranslate"><span class="pre">reference_sequences.txt</span></code>, we first need to tell bionumpy that the first two fields of this custom file format are a dna sequence and an amino acid sequence. The code chunk below shows how to do this. This is routine code and can just be copied as shown below.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bionumpy.io.delimited_buffers</span> <span class="kn">import</span> <span class="n">DelimitedBuffer</span><span class="p">,</span> <span class="n">get_bufferclass_for_datatype</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bionumpy.bnpdataclass</span> <span class="kn">import</span> <span class="n">bnpdataclass</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">bionumpy</span> <span class="k">as</span> <span class="nn">bnp</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bionumpy.sequence.indexing.kmer_indexing</span> <span class="kn">import</span> <span class="n">KmerLookup</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bionumpy.sequence.indexing.wildcard_index</span> <span class="kn">import</span> <span class="n">WildCardLookup</span>
 </pre></div>
 </div>
@@ -196,15 +222,17 @@
 <span class="gp">... </span><span class="k">class</span> <span class="nc">Olga</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="n">dna</span><span class="p">:</span> <span class="n">bnp</span><span class="o">.</span><span class="n">DNAEncoding</span>
 <span class="gp">... </span>  <span class="n">amino_acid</span><span class="p">:</span> <span class="n">bnp</span><span class="o">.</span><span class="n">AminoAcidEncoding</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">OlgaBuffer</span><span class="p">(</span><span class="n">DelimitedBuffer</span><span class="p">):</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">OlgaBuffer</span><span class="p">(</span><span class="n">DelimitedBuffer</span><span class="p">):</span>
 <span class="gp">... </span>   <span class="n">dataclass</span> <span class="o">=</span> <span class="n">Olga</span>
 </pre></div>
 </div>
 </li>
 <li><p>Using the newly created buffer type, we read-in the files with that file format.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">olga_sequence_data</span> <span class="o">=</span> <span class="n">bnp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;sequence_database.tsv&quot;</span><span class="p">,</span> <span class="n">buffer_type</span><span class="o">=</span><span class="n">OlgaBuffer</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">olga_sequence_data</span> <span class="o">=</span> <span class="n">bnp</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;reference_sequences.txt&quot;</span><span class="p">,</span> <span class="n">buffer_type</span><span class="o">=</span><span class="n">OlgaBuffer</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">olga_sequence_data</span>
-<span class="go">Olga with 1000000 entries</span>
+<span class="go">Olga with 10000000 entries</span>
 <span class="go">                      dna               amino_acid</span>
 <span class="go">  TGCGCCACCTGGGGGGACGA...               CATWGDEQYF</span>
 <span class="go">  TGTGCCAGCTCACCTACGAA...         CASSPTNSGSNYGYTF</span>
@@ -219,33 +247,10 @@
 </pre></div>
 </div>
 </li>
-<li><p>We create a Kmer lookup table on the dna field of the file with k=3. Instead the Kmer lookup could have been on the amino acid field.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dna_3mer_lookup</span> <span class="o">=</span> <span class="n">KmerLookup</span><span class="o">.</span><span class="n">create_lookup</span><span class="p">(</span><span class="n">olga_sequence_data</span><span class="o">.</span><span class="n">dna</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dna_3mer_lookup</span>
-<span class="go">Lookup on 3-merIndex of 1000000 sequences</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<p>We then could retrieve all the sequences that contain a particular k-mer. Here, we ask for all sequences that contain a “TGC”.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tgc_sequences</span> <span class="o">=</span> <span class="n">dna_3mer_lookup</span><span class="o">.</span><span class="n">get_sequences</span><span class="p">(</span><span class="s2">&quot;TGC&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tgc_sequences</span>
-<span class="go">encoded_ragged_array([&#39;TGCGCCACCTGGGGGGACGA...&#39;,</span>
-<span class="go">                      &#39;TGTGCCAGCTCACCTACGAA...&#39;,</span>
-<span class="go">                      &#39;TGCGGGCCCGTAATGAACAC...&#39;,</span>
-<span class="go">                      &#39;TGTGCCAGCAGTGAAGCGCG...&#39;,</span>
-<span class="gp">...</span>
-<span class="go">                      &#39;TGTGCCAGCAGTAGTGGGAC...&#39;], AlphabetEncoding(&#39;ACGT&#39;))</span>
-</pre></div>
-</div>
-</section>
-<section id="a-recipe-for-retrieving-sequences-that-contain-a-pattern-with-wildcard-characters">
-<h2>A recipe for retrieving sequences that contain a pattern with wildcard characters<a class="headerlink" href="#a-recipe-for-retrieving-sequences-that-contain-a-pattern-with-wildcard-characters" title="Permalink to this headline"></a></h2>
-<ul>
-<li><p>One could also retrieve all the sequences that contain a particular pattern with wildcard characters. For that, we use a <cite>WildCardLookup</cite> instead of a <cite>KmerLookup</cite>. Below, we create a <cite>WildCardLookup</cite> on the amino acid sequences of the file that we read-in.</p>
+<li><p>We create a wildcard lookup table on the amino acid sequences of the file that we read-in.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aminoacid_wildcard_lookup</span> <span class="o">=</span> <span class="n">WildCardLookup</span><span class="o">.</span><span class="n">create_lookup</span><span class="p">(</span><span class="n">olga_sequence_data</span><span class="o">.</span><span class="n">amino_acid</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aminoacid_wildcard_lookup</span>
-<span class="go">Lookup on WildcardIndex of 1000000 sequences</span>
+<span class="go">Lookup on WildcardIndex of 10000000 sequences</span>
 </pre></div>
 </div>
 </li>
@@ -267,6 +272,74 @@
 </div>
 </li>
 </ul>
+</section>
+<section id="presence-of-multiple-motifs-in-sequences">
+<h3>Presence of multiple motifs in sequences<a class="headerlink" href="#presence-of-multiple-motifs-in-sequences" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>One may be interested in multiple patterns in sequences. For instance, let us assume that one is interested in sequences that contain either of the following pattern: <code class="docutils literal notranslate"><span class="pre">GG**GG</span></code> or <code class="docutils literal notranslate"><span class="pre">GG**YG</span></code>. One can consider this as two cases:</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>One, where the user is interested in mining those sequences that contain patterns <code class="docutils literal notranslate"><span class="pre">GG</span></code> and either of another <code class="docutils literal notranslate"><span class="pre">GG</span></code> or <code class="docutils literal notranslate"><span class="pre">YG</span></code> that are always two residues apart, where the two residues can be any residues.</p></li>
+<li><p>Alternatively, mining for the above patterns will also result in sequences that always contain a <code class="docutils literal notranslate"><span class="pre">GG</span></code> in addition to another <code class="docutils literal notranslate"><span class="pre">GG</span></code> or <code class="docutils literal notranslate"><span class="pre">YG</span></code>.</p></li>
+</ol>
+<p>In either case, the following code block will mine the sequences of interest:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gg_gg_wildcard_sequences</span> <span class="o">=</span> <span class="n">aminoacid_wildcard_lookup</span><span class="o">.</span><span class="n">get_sequences</span><span class="p">(</span><span class="s2">&quot;GG..GG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gg_gg_wildcard_sequences</span>
+<span class="go">encoded_ragged_array([&#39;CASSVKPSGGVAGGETQYF&#39;,</span>
+<span class="go">                      &#39;CSARPGGGEGGENQPQHF&#39;,</span>
+<span class="go">                      &#39;CASGGRAGGVWAYEQYF&#39;,</span>
+<span class="go">                      &#39;CASSTEGGLAGGLTYNEQFF&#39;,</span>
+<span class="go">                        ...</span>
+<span class="go">                      &#39;CASSGGPEGGFSSTDTQYF&#39;], AlphabetEncoding(&#39;ACDEFGHIKLMNPQRSTVWY&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">gg_gg_wildcard_sequences</span><span class="p">)</span>
+<span class="go">14968</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gg_yg_wildcard_sequences</span> <span class="o">=</span> <span class="n">aminoacid_wildcard_lookup</span><span class="o">.</span><span class="n">get_sequences</span><span class="p">(</span><span class="s2">&quot;GG..YG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">gg_yg_wildcard_sequences</span><span class="p">)</span>
+<span class="go">28070</span>
+</pre></div>
+</div>
+<p>If the user is interested in filtering the search results above based on further criteria like gene usage or for containing additional motifs, the resulting sequence set can be considered a proxy for complex signal based on multiple criteria.</p>
+</section>
+<section id="recipe-using-grep">
+<h3>Recipe using grep<a class="headerlink" href="#recipe-using-grep" title="Permalink to this headline"></a></h3>
+<p>Alternatively, one could use the unix <code class="docutils literal notranslate"><span class="pre">grep</span></code> function instead. If the user wants to query multiple patterns from the reference sequences, all the patterns could be listed in one file as shown below. In the example below, three patterns are listed in the file named <code class="docutils literal notranslate"><span class="pre">query_patterns.txt</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat query_patterns.txt
+<span class="go">WKDY</span>
+<span class="go">ERFY</span>
+<span class="go">YREV</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>We then query the reference sequences using the patterns from the file <code class="docutils literal notranslate"><span class="pre">query_patterns.txt</span></code> and write the output to <code class="docutils literal notranslate"><span class="pre">search_results.txt</span></code>.</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>grep -f query_patterns.txt reference_sequences_file.txt &gt; search_results.txt
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>We retrieved a total of 705 sequences from the 10 million sequences that contained any of the three patterns listed in <code class="docutils literal notranslate"><span class="pre">query_patterns.txt</span></code>.</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>wc -l search_results.txt
+<span class="go">705</span>
+</pre></div>
+</div>
+</section>
+<section id="conditioning-on-gene-usage">
+<h3>Conditioning on gene usage<a class="headerlink" href="#conditioning-on-gene-usage" title="Permalink to this headline"></a></h3>
+<p>If one is interested in using/testing sequences that match only a particular V or J gene, the <code class="docutils literal notranslate"><span class="pre">search_results.txt</span></code> could further be filtered to match the specific genes of interest. As an example, if the user is interested only in those sequences where TRBV5 or TRBV27 genes are used, one could further filter the <code class="docutils literal notranslate"><span class="pre">search_results.txt</span></code> as shown below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>grep <span class="s2">&quot;TRBV27\|TRBV5&quot;</span> search_results.txt &gt; search_results_trbv5_trbv27.txt
+<span class="gp">$ </span>wc -l search_results_trbv5_trbv27.txt
+<span class="go">114</span>
+</pre></div>
+</div>
+</section>
+<section id="wall-time-estimate-for-pattern-matching">
+<h3>Wall time estimate for pattern matching<a class="headerlink" href="#wall-time-estimate-for-pattern-matching" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>In the examples that we have shown above, generation of 10 million sequences on 40 CPUs took less than 1 minute wall time and the query of the reference sequences using either bionumpy or unix grep took less than 1 minute wall time when we queried three patterns. The query time can increase with increase in the number of patterns, but for AIRR benchmarking datasets-relevant number of patterns, the query time could still be reasonably efficient.</p></li>
+</ul>
+</section>
 </section>
 <section id="file-format-of-ground-truth-signal-sequences">
 <span id="signal-seq-file-format"></span><h2>File format of ground truth signal sequences<a class="headerlink" href="#file-format-of-ground-truth-signal-sequences" title="Permalink to this headline"></a></h2>

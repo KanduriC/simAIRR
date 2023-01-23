@@ -99,11 +99,14 @@ When synthetic AIRR datasets are generated using sampling from know V(D)J recomb
 
 
 Querying sequences enriched for k-mer like patterns
-----------------------------------------------------
+---------------------------------------------------
 
 Using simAIRR and the new `bionumpy <https://github.com/bionumpy/bionumpy>`_ library, one could query and retrieve sequences enriched for k-mer like patterns very easily with just a few lines of Python code. Below, we provide a simple Python recipe.
 
-- First, use the simAIRR's :ref:`baseline repertoires generation` mode to generate a large database of sequences. For instance, in the code chunk below, we generate a single file with one million sequences.
+Generation of reference sequences to query against
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- First, use the simAIRR's :ref:`baseline repertoires generation` mode to generate a large number of reference sequences to query against. For instance, in the code chunk below, we generate a single file with ten million sequences.
 
 .. code-block:: YAML
 
@@ -111,32 +114,54 @@ Using simAIRR and the new `bionumpy <https://github.com/bionumpy/bionumpy>`_ lib
     olga_model: humanTRB
     output_path: /path/to/output/directory
     n_repertoires: 1
-    n_sequences: 1000000
+    n_sequences: 10000000
     n_threads: 1
 
-- Alternatively, one could use the sequence database of their choice to query the sequences for k-mer like patterns. The code chunk above is just one example to get a large number of sequences to make queries.
-- Let us assume that the one million sequences that were generated in previous step are stored in a file named ``sequence_database.tsv``.
-- Next, we import relevant functionalities from the bionumpy library to read in the ``sequence_database.tsv``, create a k-mer or wild-card index and querying the sequences.
-- bionumpy works with popular file formats of biological sequence data. Since bionumpy does not know the file format of our ``sequence_database.tsv``, we first need to tell bionumpy that the first two fields of this custom file format are a dna sequence and an amino acid sequence. The code chunk below shows how to do this. This is routine code and can just be copied as shown below.
+Note that instead of generating 10 million sequences in a single file, if multiple processes are used using `n_threads` argument (if more CPUs are available), and the n_sequences are split across multiple repertoires using `n_threads` argument, the reference sequence generation will be much quicker. For instance, the following configuration will generate 10 million sequences across 40 files in less than 2 minutes wall time.
+
+.. code-block:: YAML
+
+    mode: baseline_repertoire_generation
+    olga_model: humanTRB
+    output_path: /path/to/output/directory
+    n_repertoires: 40
+    n_sequences: 250000
+    n_threads: 40
+
+To combine them into a single file:
+
+.. code-block:: console
+
+    $ cat /path/to/output/directory/* > reference_sequences.txt
+
+- Alternatively, one could use the reference sequences of their choice to query the sequences for k-mer like patterns. The code chunks above is just one example to get a large number of sequences to make queries.
+- Let us assume that the ten million sequences that were generated in previous step are stored in a file named ``reference_sequences.txt``.
+
+Pattern matching recipe using bionumpy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Next, we import relevant functionalities from the bionumpy library to read in the ``reference_sequences.txt``, create a lookup index and querying the sequences.
+- bionumpy works with popular file formats of biological sequence data. Since bionumpy does not know the file format of our ``reference_sequences.txt``, we first need to tell bionumpy that the first two fields of this custom file format are a dna sequence and an amino acid sequence. The code chunk below shows how to do this. This is routine code and can just be copied as shown below.
 
     >>> from bionumpy.io.delimited_buffers import DelimitedBuffer, get_bufferclass_for_datatype
     >>> from bionumpy.bnpdataclass import bnpdataclass
     >>> import bionumpy as bnp
-    >>> from bionumpy.sequence.indexing.kmer_indexing import KmerLookup
     >>> from bionumpy.sequence.indexing.wildcard_index import WildCardLookup
 
     >>> @bnpdataclass
     ... class Olga:
     ...   dna: bnp.DNAEncoding
     ...   amino_acid: bnp.AminoAcidEncoding
+
+
     >>> class OlgaBuffer(DelimitedBuffer):
     ...    dataclass = Olga
 
 - Using the newly created buffer type, we read-in the files with that file format.
 
-    >>> olga_sequence_data = bnp.open(filename="sequence_database.tsv", buffer_type=OlgaBuffer).read()
+    >>> olga_sequence_data = bnp.open(filename="reference_sequences.txt", buffer_type=OlgaBuffer).read()
     >>> olga_sequence_data
-    Olga with 1000000 entries
+    Olga with 10000000 entries
                           dna               amino_acid
       TGCGCCACCTGGGGGGACGA...               CATWGDEQYF
       TGTGCCAGCTCACCTACGAA...         CASSPTNSGSNYGYTF
@@ -149,31 +174,11 @@ Using simAIRR and the new `bionumpy <https://github.com/bionumpy/bionumpy>`_ lib
       TGTGCCAGCAGCCAAGTCTC...        CASSQVSRQDSSYEQYF
       TGTGCCAGCAGGCCGGGACA...     CASRPGQGAPGWEDNYGYTF
 
-- We create a Kmer lookup table on the dna field of the file with k=3. Instead the Kmer lookup could have been on the amino acid field.
-
-    >>> dna_3mer_lookup = KmerLookup.create_lookup(olga_sequence_data.dna, k=3)
-    >>> dna_3mer_lookup
-    Lookup on 3-merIndex of 1000000 sequences
-
-We then could retrieve all the sequences that contain a particular k-mer. Here, we ask for all sequences that contain a "TGC".
-
-    >>> tgc_sequences = dna_3mer_lookup.get_sequences("TGC")
-    >>> tgc_sequences
-    encoded_ragged_array(['TGCGCCACCTGGGGGGACGA...',
-                          'TGTGCCAGCTCACCTACGAA...',
-                          'TGCGGGCCCGTAATGAACAC...',
-                          'TGTGCCAGCAGTGAAGCGCG...',
-    ...
-                          'TGTGCCAGCAGTAGTGGGAC...'], AlphabetEncoding('ACGT'))
-
-A recipe for retrieving sequences that contain a pattern with wildcard characters
-----------------------------------------------------------------------------------
-
-- One could also retrieve all the sequences that contain a particular pattern with wildcard characters. For that, we use a `WildCardLookup` instead of a `KmerLookup`. Below, we create a `WildCardLookup` on the amino acid sequences of the file that we read-in.
+- We create a wildcard lookup table on the amino acid sequences of the file that we read-in.
 
     >>> aminoacid_wildcard_lookup = WildCardLookup.create_lookup(olga_sequence_data.amino_acid)
     >>> aminoacid_wildcard_lookup
-    Lookup on WildcardIndex of 1000000 sequences
+    Lookup on WildcardIndex of 10000000 sequences
 
 - We then retrieve all the sequences that contain a pattern like "RG.", where the "." indicates a wildcard character.
 
@@ -191,6 +196,76 @@ A recipe for retrieving sequences that contain a pattern with wildcard character
                           'CASSEADRGRKAFF',
                           'CASRVASRGRDKQPQHF'], AlphabetEncoding('ACDEFGHIKLMNPQRSTVWY'))
 
+
+Presence of multiple motifs in sequences
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- One may be interested in multiple patterns in sequences. For instance, let us assume that one is interested in sequences that contain either of the following pattern: ``GG**GG`` or ``GG**YG``. One can consider this as two cases:
+1. One, where the user is interested in mining those sequences that contain patterns ``GG`` and either of another ``GG`` or ``YG`` that are always two residues apart, where the two residues can be any residues.
+2. Alternatively, mining for the above patterns will also result in sequences that always contain a ``GG`` in addition to another ``GG`` or ``YG``.
+
+In either case, the following code block will mine the sequences of interest:
+
+    >>> gg_gg_wildcard_sequences = aminoacid_wildcard_lookup.get_sequences("GG..GG")
+    >>> gg_gg_wildcard_sequences
+    encoded_ragged_array(['CASSVKPSGGVAGGETQYF',
+                          'CSARPGGGEGGENQPQHF',
+                          'CASGGRAGGVWAYEQYF',
+                          'CASSTEGGLAGGLTYNEQFF',
+                            ...
+                          'CASSGGPEGGFSSTDTQYF'], AlphabetEncoding('ACDEFGHIKLMNPQRSTVWY'))
+    >>> len(gg_gg_wildcard_sequences)
+    14968
+
+    >>> gg_yg_wildcard_sequences = aminoacid_wildcard_lookup.get_sequences("GG..YG")
+    >>> len(gg_yg_wildcard_sequences)
+    28070
+
+If the user is interested in filtering the search results above based on further criteria like gene usage or for containing additional motifs, the resulting sequence set can be considered a proxy for complex signal based on multiple criteria.
+
+
+Recipe using grep
+^^^^^^^^^^^^^^^^^^
+
+Alternatively, one could use the unix ``grep`` function instead. If the user wants to query multiple patterns from the reference sequences, all the patterns could be listed in one file as shown below. In the example below, three patterns are listed in the file named ``query_patterns.txt``.
+
+.. code-block:: console
+
+    $ cat query_patterns.txt
+    WKDY
+    ERFY
+    YREV
+
+- We then query the reference sequences using the patterns from the file ``query_patterns.txt`` and write the output to ``search_results.txt``.
+
+.. code-block:: console
+
+    $ grep -f query_patterns.txt reference_sequences_file.txt > search_results.txt
+
+- We retrieved a total of 705 sequences from the 10 million sequences that contained any of the three patterns listed in ``query_patterns.txt``.
+
+.. code-block:: console
+
+    $ wc -l search_results.txt
+    705
+
+Conditioning on gene usage
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If one is interested in using/testing sequences that match only a particular V or J gene, the ``search_results.txt`` could further be filtered to match the specific genes of interest. As an example, if the user is interested only in those sequences where TRBV5 or TRBV27 genes are used, one could further filter the ``search_results.txt`` as shown below:
+
+.. code-block:: console
+
+    $ grep "TRBV27\|TRBV5" search_results.txt > search_results_trbv5_trbv27.txt
+    $ wc -l search_results_trbv5_trbv27.txt
+    114
+
+
+
+Wall time estimate for pattern matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- In the examples that we have shown above, generation of 10 million sequences on 40 CPUs took less than 1 minute wall time and the query of the reference sequences using either bionumpy or unix grep took less than 1 minute wall time when we queried three patterns. The query time can increase with increase in the number of patterns, but for AIRR benchmarking datasets-relevant number of patterns, the query time could still be reasonably efficient.
 
 .. _signal_seq_file_format:
 

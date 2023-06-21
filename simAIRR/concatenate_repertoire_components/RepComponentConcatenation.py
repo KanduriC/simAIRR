@@ -3,16 +3,18 @@ import glob
 import secrets
 from multiprocessing import Pool
 import pandas as pd
+import numpy as np
 from simAIRR.util.utilities import makedir_if_not_exists
 
 
 class RepComponentConcatenation:
-    def __init__(self, components_type, super_path, n_threads, export_nt=None):
+    def __init__(self, components_type, super_path, n_threads, export_nt=None, n_sequences=None):
         self.components_type = components_type
         self.super_path = str(super_path).rstrip('/')
         self.n_threads = n_threads
         self.export_nt = export_nt
         self.proxy_primary_fns = None
+        self.n_sequences = n_sequences
 
     def _set_component_specific_paths(self):
         # super_path in case of "public_private" concatenation is baseline_repertoires_path and
@@ -46,6 +48,9 @@ class RepComponentConcatenation:
         concatenated_df = pd.concat(dfs_list)
         if self.export_nt is False:
             concatenated_df = concatenated_df.drop(concatenated_df.columns[[0]], axis=1)
+        if self.components_type == "public_private":
+            n_seq = np.random.poisson(self.n_sequences)
+            concatenated_df = concatenated_df.head(n_seq)
         concatenated_df.to_csv(concat_fn, header=None, index=None, sep='\t')
 
     def multi_concatenate_repertoire_components(self):

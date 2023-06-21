@@ -311,3 +311,61 @@ The user is not required to supply this file unless the user desires to generate
     :header-rows: 1
     :delim: 0x00000009
 
+Custom models of realistic receptor sharing for different AIRR loci
+---------------------------------------------------------------------
+
+-  Note that in simAIRR package, we have provided empirical models for
+   realistic receptor sequence sharing just for TCRB loci, based on the
+   public availability of a large experimental dataset. For other AIRR
+   loci, custom models will be added into future versions of simAIRR
+   when large-scale experimental data for other loci becomes available.
+   For now users are encouraged to generate their own custom models of
+   realistic receptor sharing for other loci (if sufficiently large data
+   available to them). Note that, based on our analyses, a sample size
+   of 200 (100 each of cases and controls) approximates well the
+   realistic receptor sequence sharing.
+
+-  Through `usecases_simairr <https://github.com/KanduriC/usecases_simairr>`__ python package, we provide console scripts that can be run
+   through command line to learn custom models for realistic receptor
+   sequence sharing. Each console script requires some input parameters
+   from the users. To know which input arguments are required for each
+   console script, we recommend using the ``--help`` argument of each
+   console script. For instance, ``concat_airr --help``.
+
+-  Note that the following console scripts are expected to be run in a
+   sequence.
+
++----------------------------+----------------------------------------+
+| Command                    | Description                            |
++============================+========================================+
+| ``concat_airr``            | Concatenate the repertoire files into  |
+|                            | two separate files that will be needed |
+|                            | by                                     |
+|                            | `compAIRR <h                           |
+|                            | ttps://github.com/uio-bmi/compairr>`__ |
+|                            | tool to count the frequencies of each  |
+|                            | unique clones                          |
++----------------------------+----------------------------------------+
+| ``run_compairr_seqcounts`` | Run                                    |
+|                            | `compAIRR <h                           |
+|                            | ttps://github.com/uio-bmi/compairr>`__ |
+|                            | tool to count the frequencies of each  |
+|                            | unique clones.                         |
++----------------------------+----------------------------------------+
+| ``compute_pgen_public``    | Compute the generation probabilities   |
+|                            | of each sequence using OLGA tool.      |
++----------------------------+----------------------------------------+
+| ``compute_pval``           | Computes p-values as the probability   |
+|                            | of observing a public sequence in the  |
+|                            | same or higher number of repertoires   |
+|                            | as it was observed in for a given      |
+|                            | dataset.                               |
++----------------------------+----------------------------------------+
+| ``concat_pdata``           | Concatenate the files generated        |
+|                            | through previous step to produce one   |
+|                            | large file that will be used in the    |
+|                            | next step                              |
++----------------------------+----------------------------------------+
+| ``gen_pgen_count_map``     | Generate pgen_count_map files in the   |
+|                            | required format desired by simAIRR     |
++----------------------------+----------------------------------------+

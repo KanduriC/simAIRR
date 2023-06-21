@@ -60,6 +60,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#file-format-of-ground-truth-signal-sequences">File format of ground truth signal sequences</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pgen-count-mapping-file-format">pgen_count_mapping file format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-models-of-realistic-receptor-sharing-for-different-airr-loci">Custom models of realistic receptor sharing for different AIRR loci</a></li>
 </ul>
 </li>
 </ul>
@@ -911,6 +912,77 @@ nucleotide sequences are not exported in the simulated repertoires by default. T
 <td><p>0.00586</p></td>
 <td><p>0.00732</p></td>
 <td><p>0.054543161114593064</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="custom-models-of-realistic-receptor-sharing-for-different-airr-loci">
+<h2>Custom models of realistic receptor sharing for different AIRR loci<a class="headerlink" href="#custom-models-of-realistic-receptor-sharing-for-different-airr-loci" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Note that in simAIRR package, we have provided empirical models for
+realistic receptor sequence sharing just for TCRB loci, based on the
+public availability of a large experimental dataset. For other AIRR
+loci, custom models will be added into future versions of simAIRR
+when large-scale experimental data for other loci becomes available.
+For now users are encouraged to generate their own custom models of
+realistic receptor sharing for other loci (if sufficiently large data
+available to them). Note that, based on our analyses, a sample size
+of 200 (100 each of cases and controls) approximates well the
+realistic receptor sequence sharing.</p></li>
+<li><p>Through <a class="reference external" href="https://github.com/KanduriC/usecases_simairr">usecases_simairr</a> python package, we provide console scripts that can be run
+through command line to learn custom models for realistic receptor
+sequence sharing. Each console script requires some input parameters
+from the users. To know which input arguments are required for each
+console script, we recommend using the <code class="docutils literal notranslate"><span class="pre">--help</span></code> argument of each
+console script. For instance, <code class="docutils literal notranslate"><span class="pre">concat_airr</span> <span class="pre">--help</span></code>.</p></li>
+<li><p>Note that the following console scripts are expected to be run in a
+sequence.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">concat_airr</span></code></p></td>
+<td><p>Concatenate the repertoire files into
+two separate files that will be needed
+by
+<a class="reference external" href="https://github.com/uio-bmi/compairr">compAIRR</a>
+tool to count the frequencies of each
+unique clones</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_compairr_seqcounts</span></code></p></td>
+<td><p>Run
+<a class="reference external" href="https://github.com/uio-bmi/compairr">compAIRR</a>
+tool to count the frequencies of each
+unique clones.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compute_pgen_public</span></code></p></td>
+<td><p>Compute the generation probabilities
+of each sequence using OLGA tool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">compute_pval</span></code></p></td>
+<td><p>Computes p-values as the probability
+of observing a public sequence in the
+same or higher number of repertoires
+as it was observed in for a given
+dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">concat_pdata</span></code></p></td>
+<td><p>Concatenate the files generated
+through previous step to produce one
+large file that will be used in the
+next step</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gen_pgen_count_map</span></code></p></td>
+<td><p>Generate pgen_count_map files in the
+required format desired by simAIRR</p></td>
 </tr>
 </tbody>
 </table>

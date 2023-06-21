@@ -84,7 +84,7 @@ class Workflows:
                      'sequence counts.')
         pub_rep_gen.execute()
         rep_concat = RepComponentConcatenation(components_type="public_private", super_path=self.baseline_reps_path,
-                                               n_threads=self.n_threads)
+                                               n_threads=self.n_threads, n_sequences=self.n_sequences)
         logging.info('Concatenating public and private repertoire components')
         rep_concat.multi_concatenate_repertoire_components()
 

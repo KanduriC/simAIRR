@@ -1,4 +1,5 @@
 MANIFEST.in
+README.md
 setup.py
 simAIRR/__init__.py
 simAIRR.egg-info/PKG-INFO
@@ -49,8 +50,6 @@ tests/pgen_count_mapping/__init__.py
 tests/pgen_count_mapping/test_PgenCountMap.py
 tests/sequence_presence_matrix/__init__.py
 tests/sequence_presence_matrix/test_SequencePresenceMatrix.py
-tests/simairr_cli/__init__.py
-tests/simairr_cli/test_simairr_cli.py
 tests/util/__init__.py
 tests/util/test_utilities.py
 tests/workflows/__init__.py

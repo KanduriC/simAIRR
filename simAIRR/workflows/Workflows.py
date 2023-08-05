@@ -6,7 +6,7 @@ import shutil
 from simAIRR.concatenate_repertoire_components.RepComponentConcatenation import RepComponentConcatenation
 from simAIRR.expand_repertoire_components.PublicRepertoireGeneration import PublicRepertoireGeneration
 from simAIRR.expand_repertoire_components.SignalComponentGeneration import SignalComponentGeneration
-from simAIRR.olga_baseline_gen.OlgaRepertoiresGeneration import OlgaRepertoiresGeneration
+from simAIRR.baseline_repertoires_generation.BaselineRepertoiresGeneration import BaselineRepertoiresGeneration
 from simAIRR.olga_compute_pgen.OlgaPgenComputation import OlgaPgenComputation
 from simAIRR.olga_compute_pgen.UniqueSequenceFilter import UniqueSequenceFilter
 from simAIRR.pgen_count_map.PgenCountMap import PgenCountMap
@@ -14,7 +14,8 @@ from simAIRR.util.utilities import makedir_if_not_exists, sort_olga_seq_by_pgen
 
 
 class Workflows:
-    def __init__(self, mode: str = None, olga_model: str = None, output_path: str = None, n_sequences: int = None,
+    def __init__(self, mode: str = None, olga_model: str = None, background_sequences_path: str = None,
+                 output_path: str = None, n_sequences: int = None,
                  n_repertoires: int = None, n_threads: int = None, seed: int = None,
                  public_seq_proportion: float = None, public_seq_pgen_count_mapping_file: str = None,
                  signal_pgen_count_mapping_file: str = None,
@@ -25,6 +26,7 @@ class Workflows:
 
         :param mode: str
         :param olga_model: str
+        :param background_sequences_path: str
         :param output_path: str
         :param n_sequences: int
         :param n_repertoires: int
@@ -41,6 +43,7 @@ class Workflows:
         """
         self.mode = mode
         self.olga_model = olga_model
+        self.background_sequences_path = background_sequences_path
         self.output_path = output_path
         self.baseline_reps_path = os.path.join(self.output_path, "baseline_repertoires")
         self.filtered_public_reps_path = os.path.join(self.baseline_reps_path, "filtered_public_repertoires")
@@ -60,11 +63,13 @@ class Workflows:
         self.store_intermediate_files = store_intermediate_files
 
     def _baseline_repertoire_generation(self):
-        olga_reps = OlgaRepertoiresGeneration(model=self.olga_model, output_file_path=self.baseline_reps_path,
-                                              n_seq=self.n_sequences, seed=self.seed,
-                                              n_reps=self.n_repertoires, n_threads=self.n_threads)
-        logging.info(f'Generating baseline repertoires with the following parameters --- {vars(olga_reps)}')
-        olga_reps.olga_generate_multiple_repertoires()
+        baseline_reps = BaselineRepertoiresGeneration(model=self.olga_model,
+                                                      background_sequences_path=self.background_sequences_path,
+                                                      output_file_path=self.baseline_reps_path,
+                                                      n_seq=self.n_sequences, seed=self.seed,
+                                                      n_reps=self.n_repertoires, n_threads=self.n_threads)
+        logging.info(f'Generating baseline repertoires with the following parameters --- {vars(baseline_reps)}')
+        baseline_reps.generate_multiple_repertoires()
 
     def _public_component_correction(self):
         seq_filter = UniqueSequenceFilter(baseline_repertoires_path=self.baseline_reps_path,

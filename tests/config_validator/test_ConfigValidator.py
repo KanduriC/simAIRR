@@ -18,6 +18,27 @@ def test_validate_user_config_mode_invalid():
         test_conf._validate_user_config(config_obj=usr_yaml)
 
 
+# test to validate that either 'olga_model' or 'background_sequences_path' is required and not both
+def test_validate_user_config_both_olga_model_and_background_sequences_path():
+    usr_yaml = {'mode': "signal_implantation", 'olga_model': 'humanTRB',
+                'background_sequences_path': 'mock_string_to_replace_path', 'n_repertoires': 10,
+                'n_sequences': 20, 'n_threads': 2, 'signal_sequences_file': 'mock_string_to_replace_path',
+                'phenotype_burden': 10}
+    test_conf = ConfigValidator("mock_string_to_replace_path")
+    with pytest.raises(AssertionError) as e:
+        test_conf._validate_user_config(config_obj=usr_yaml)
+    # another config to check that supplying only one of the two is valid
+    usr_yaml = {'mode': 'signal_implantation', 'olga_model': 'humanTRB', 'n_repertoires': 10, 'n_sequences': 20,
+                'n_threads': 2, 'signal_sequences_file': 'mock_string_to_replace_path', 'phenotype_burden': 10}
+    test_conf = ConfigValidator("mock_string_to_replace_path")
+    test_conf._validate_user_config(config_obj=usr_yaml)
+    usr_yaml = {'mode': 'signal_implantation', 'background_sequences_path': 'mock_string_to_replace_path',
+                'n_repertoires': 10, 'n_sequences': 20, 'n_threads': 2,
+                'signal_sequences_file': 'mock_string_to_replace_path', 'phenotype_burden': 10}
+    test_conf = ConfigValidator("mock_string_to_replace_path")
+    test_conf._validate_user_config(config_obj=usr_yaml)
+
+
 def test_validate_user_config_missing_required():
     usr_yaml = {'mode': "signal_implantation", 'olga_model': 'humanTRB', 'n_repertoires': 10,
                 'n_sequences': 20, 'n_threads': 2}

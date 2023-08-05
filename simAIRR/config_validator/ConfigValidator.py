@@ -32,7 +32,7 @@ class ConfigValidator:
                                document_dict=config_obj)
 
     def _get_mode_specific_default_params_dict(self, mode):
-        mode_agnostic_dict = {'mode': "signal_implantation", 'olga_model': None,
+        mode_agnostic_dict = {'mode': "signal_implantation", 'olga_model': None, 'background_sequences_path': None,
                               'output_path': os.path.join("./", "simairr_output"), 'n_repertoires': None,
                               'seed': random.randint(1, 10000), 'store_intermediate_files': False}
         baseline_dict = {'n_sequences': None, 'n_threads': None}
@@ -58,6 +58,7 @@ class ConfigValidator:
                                                    "signal_implantation", "signal_feasibility_assessment"]},
                               'olga_model': {'required': True, 'type': str,
                                              'allowed': ['humanTRA', 'humanTRB', 'humanIGH', 'mouseTRB']},
+                              'background_sequences_path': {'required': False, 'type': (str, type(None))},
                               'output_path': {'required': False, 'type': (str, type(None))},
                               'n_repertoires': {'required': True, 'type': int},
                               'seed': {'required': False, 'type': (int, type(None))},

@@ -1,4 +1,6 @@
 import os.path
+import subprocess
+
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -55,3 +57,12 @@ def write_yaml_file(yaml_dict, out_file_path):
 def merge_dicts(dicts_list):
     merged_dict = {k: v for d in dicts_list for k, v in d.items()}
     return merged_dict
+
+
+def count_lines(file_path):
+    try:
+        result = subprocess.run(["wc", "-l", file_path], capture_output=True, text=True, check=True)
+        line_count = int(result.stdout.strip().split()[0])
+        return line_count
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return 0

@@ -20,12 +20,22 @@ def test__generate_repertoire_from_background_sequences(tmp_path):
     baseline_reps_path = os.path.join(tmp_path, 'baseline_reps')
     command = 'olga-generate_sequences --humanTRB' + ' -o ' + out_filename + ' -n 1000 --seed 1234'
     exit_code = os.system(command)
-    baseline_reps = BaselineRepertoiresGeneration(model=None, background_sequences_path=out_filename,
+    baseline_reps = BaselineRepertoiresGeneration(model='humanTRB', background_sequences_path=out_filename,
                                                   output_file_path=baseline_reps_path, n_seq=10, seed=1234, n_reps=12,
                                                   n_threads=2)
     baseline_reps.generate_multiple_repertoires()
     files = [fn for fn in os.listdir(baseline_reps_path) if os.path.isfile(os.path.join(baseline_reps_path, fn))]
-    print(baseline_reps_path)
     assert len(files) == 12
     num_lines = sum(1 for line in open(os.path.join(baseline_reps_path, 'rep_9.tsv')))
     assert num_lines == 10
+
+
+def test__postprocess_baseline_repertoires(tmp_path):
+    out_path = tmp_path / 'data/baseline_repertoires'
+    olga_reps = BaselineRepertoiresGeneration(model='humanTRB', background_sequences_path=None,
+                                              output_file_path=out_path,
+                                              n_seq=9, seed=1234,
+                                              n_reps=10, n_threads=2)
+    olga_reps.generate_multiple_repertoires()
+    olga_reps.postprocess_baseline_repertoires(output_path=out_path, export_nt_sequences=False, negative_control=True)
+

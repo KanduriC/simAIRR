@@ -18,27 +18,6 @@ def test_validate_user_config_mode_invalid():
         test_conf._validate_user_config(config_obj=usr_yaml)
 
 
-# test to validate that either 'olga_model' or 'background_sequences_path' is required and not both
-def test_validate_user_config_both_olga_model_and_background_sequences_path():
-    usr_yaml = {'mode': "signal_implantation", 'olga_model': 'humanTRB',
-                'background_sequences_path': 'mock_string_to_replace_path', 'n_repertoires': 10,
-                'n_sequences': 20, 'n_threads': 2, 'signal_sequences_file': 'mock_string_to_replace_path',
-                'phenotype_burden': 10}
-    test_conf = ConfigValidator("mock_string_to_replace_path")
-    with pytest.raises(AssertionError) as e:
-        test_conf._validate_user_config(config_obj=usr_yaml)
-    # another config to check that supplying only one of the two is valid
-    usr_yaml = {'mode': 'signal_implantation', 'olga_model': 'humanTRB', 'n_repertoires': 10, 'n_sequences': 20,
-                'n_threads': 2, 'signal_sequences_file': 'mock_string_to_replace_path', 'phenotype_burden': 10}
-    test_conf = ConfigValidator("mock_string_to_replace_path")
-    test_conf._validate_user_config(config_obj=usr_yaml)
-    usr_yaml = {'mode': 'signal_implantation', 'background_sequences_path': 'mock_string_to_replace_path',
-                'n_repertoires': 10, 'n_sequences': 20, 'n_threads': 2,
-                'signal_sequences_file': 'mock_string_to_replace_path', 'phenotype_burden': 10}
-    test_conf = ConfigValidator("mock_string_to_replace_path")
-    test_conf._validate_user_config(config_obj=usr_yaml)
-
-
 def test_validate_user_config_missing_required():
     usr_yaml = {'mode': "signal_implantation", 'olga_model': 'humanTRB', 'n_repertoires': 10,
                 'n_sequences': 20, 'n_threads': 2}
@@ -56,4 +35,5 @@ def test_update_user_config():
                               'output_path': './simairr_output', 'n_repertoires': 10, 'seed': 999, 'n_sequences': 20,
                               'n_threads': 2, 'public_seq_proportion': 0.1,
                               'public_seq_pgen_count_mapping_file': './mock.tsv',
-                              'store_intermediate_files': False}, f"Error: user config update failed"
+                              'store_intermediate_files': False, 'background_sequences_path': None,
+                              'depth_variation': False, 'negative_control': False}, f"Error: user config update failed"

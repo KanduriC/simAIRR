@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Configuration manual &mdash; simAIRR  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +14,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> simAIRR
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            simAIRR
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -58,8 +63,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Configuration manual</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration manual</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -69,8 +74,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="configuration-manual">
-<h1>Configuration manual<a class="headerlink" href="#configuration-manual" title="Permalink to this headline"></a></h1>
+  <div class="section" id="configuration-manual">
+<h1>Configuration manual<a class="headerlink" href="#configuration-manual" title="Permalink to this heading"></a></h1>
 <span id="configuration-table"></span><table class="colwidths-given docutils align-default" id="id1">
 <caption><span class="caption-text"><strong>simAIRR arguments</strong></span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
 <colgroup>
@@ -133,74 +138,86 @@
 <td><p>False</p></td>
 <td><p>No reproducible seed</p></td>
 </tr>
-<tr class="row-odd"><td><p>store_intermediate_files</p></td>
-<td><p>Whether to store all the intermediate files</p></td>
-<td><p>bool</p></td>
-<td><p>False</p></td>
-<td><p>False</p></td>
-</tr>
-<tr class="row-even"><td><p>n_sequences</p></td>
+<tr class="row-odd"><td><p>n_sequences</p></td>
 <td><p>Approximate and minimum number of sequences desired in each repertoire</p></td>
 <td><p>int</p></td>
 <td><p>True</p></td>
 <td><p>None</p></td>
 </tr>
-<tr class="row-odd"><td><p>n_threads</p></td>
+<tr class="row-even"><td><p>depth_variation</p></td>
+<td><p>whether to have poisson variation around desired number of sequences (applicable only in baseline repertoire generation mode)</p></td>
+<td><p>bool</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>background_sequences_path</p></td>
+<td><p>path to a file containing background sequences that will be used for the construction of baseline repertoires instead of a OLGA V(D)J model</p></td>
+<td><p>str</p></td>
+<td><p>False</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>n_threads</p></td>
 <td><p>Number of processes (reduces execution time at the expense of using more of the available CPUs</p></td>
 <td><p>int</p></td>
 <td><p>True</p></td>
 <td><p>None</p></td>
 </tr>
-<tr class="row-even"><td><p>public_seq_proportion</p></td>
+<tr class="row-odd"><td><p>public_seq_proportion</p></td>
 <td><p>The proportion of the total unique sequences in repertoire dataset to be shared across repertoires (a value between 0 and 1)</p></td>
 <td><p>float</p></td>
 <td><p>False</p></td>
 <td><p>0.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>public_seq_pgen_count_mapping_file</p></td>
+<tr class="row-even"><td><p>public_seq_pgen_count_mapping_file</p></td>
 <td><p>Path to the file in the suggested format with empirical relation between generation probability and population incidence of public sequences</p></td>
 <td><p>str</p></td>
 <td><p>False</p></td>
 <td><p>Empirical relation derived based on public sequence data from Emerson et al., 2017</p></td>
 </tr>
-<tr class="row-even"><td><p>signal_pgen_count_mapping_file</p></td>
+<tr class="row-odd"><td><p>signal_pgen_count_mapping_file</p></td>
 <td><p>Path to the file in the suggested format with empirical relation between generation probability and population incidence of signal sequences</p></td>
 <td><p>str</p></td>
 <td><p>False</p></td>
 <td><p>Empirical relation derived based on reported signal data from Emerson et al., 2017</p></td>
 </tr>
-<tr class="row-odd"><td><p>signal_sequences_file</p></td>
+<tr class="row-even"><td><p>signal_sequences_file</p></td>
 <td><p>Path to the file with signal sequences (in OLGA format)</p></td>
 <td><p>str</p></td>
 <td><p>True</p></td>
 <td><p>None</p></td>
 </tr>
-<tr class="row-even"><td><p>positive_label_rate</p></td>
+<tr class="row-odd"><td><p>positive_label_rate</p></td>
 <td><p>Proportion of desired repertoires to receive signal implantation</p></td>
 <td><p>float</p></td>
 <td><p>False</p></td>
 <td><p>0.5</p></td>
 </tr>
-<tr class="row-odd"><td><p>phenotype_burden</p></td>
+<tr class="row-even"><td><p>phenotype_burden</p></td>
 <td><p>Average number of signal sequences each positive class labeled repertoire should carry</p></td>
 <td><p>int</p></td>
 <td><p>True</p></td>
 <td><p>None</p></td>
 </tr>
-<tr class="row-even"><td><p>phenotype_pool_size</p></td>
+<tr class="row-odd"><td><p>phenotype_pool_size</p></td>
 <td><p>Desired number of sequences to be used for signal implantation (if a large pool of sequences are supplied initially)</p></td>
 <td><p>int</p></td>
 <td><p>False</p></td>
 <td><p>Minimum number of sequences sufficient to meet desired phenotype burden will be chosen</p></td>
 </tr>
-<tr class="row-odd"><td><p>allow_closer_phenotype_burden</p></td>
+<tr class="row-even"><td><p>allow_closer_phenotype_burden</p></td>
 <td><p>If signal implantation was found infeasible precisely at the desired phenotype burden, whether to allow signal implantation at a closer phenotype burden</p></td>
 <td><p>bool</p></td>
 <td><p>False</p></td>
 <td><p>True</p></td>
 </tr>
-<tr class="row-even"><td><p>store_intermediate_files</p></td>
+<tr class="row-odd"><td><p>store_intermediate_files</p></td>
 <td><p>whether to store all the intermediate files that were generated and used as the basis for simulated repertoires</p></td>
+<td><p>bool</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>negative_control</p></td>
+<td><p>whether baseline repertoires are intended as negative control</p></td>
 <td><p>bool</p></td>
 <td><p>False</p></td>
 <td><p>False</p></td>
@@ -217,7 +234,7 @@
 </tr>
 </tbody>
 </table>
-</section>
+</div>
 
 
            </div>

@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 import shutil
+from pathlib import Path
 from simAIRR.concatenate_repertoire_components.RepComponentConcatenation import RepComponentConcatenation
 from simAIRR.expand_repertoire_components.PublicRepertoireGeneration import PublicRepertoireGeneration
 from simAIRR.expand_repertoire_components.SignalComponentGeneration import SignalComponentGeneration
@@ -21,7 +22,8 @@ class Workflows:
                  signal_pgen_count_mapping_file: str = None,
                  signal_sequences_file: str = None, positive_label_rate: float = None, phenotype_burden: int = None,
                  phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None,
-                 store_intermediate_files: bool = None, export_nt: bool = None):
+                 store_intermediate_files: bool = None, export_nt: bool = None, depth_variation: bool = None,
+                 negative_control: bool = None):
         """
 
         :param mode: str
@@ -41,6 +43,8 @@ class Workflows:
         :param phenotype_pool_size: int
         :param allow_closer_phenotype_burden: bool
         """
+        self.negative_control = negative_control
+        self.depth_variation = depth_variation
         self.mode = mode
         self.olga_model = olga_model
         self.background_sequences_path = background_sequences_path
@@ -67,7 +71,8 @@ class Workflows:
                                                       background_sequences_path=self.background_sequences_path,
                                                       output_file_path=self.baseline_reps_path,
                                                       n_seq=self.n_sequences, seed=self.seed,
-                                                      n_reps=self.n_repertoires, n_threads=self.n_threads)
+                                                      n_reps=self.n_repertoires, n_threads=self.n_threads,
+                                                      depth_variation=self.depth_variation)
         logging.info(f'Generating baseline repertoires with the following parameters --- {vars(baseline_reps)}')
         baseline_reps.generate_multiple_repertoires()
 
@@ -138,6 +143,9 @@ class Workflows:
 
     def workflow_generate_baseline_repertoires(self):
         self._baseline_repertoire_generation()
+        BaselineRepertoiresGeneration.postprocess_baseline_repertoires(output_path=self.baseline_reps_path,
+                                                                       export_nt_sequences=self.export_nt,
+                                                                       negative_control=self.negative_control)
 
     def workflow_generate_public_component_corrected_repertoires(self):
         self._baseline_repertoire_generation()

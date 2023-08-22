@@ -89,3 +89,20 @@ def test_signal_implantation_workflow(tmp_path):
     sim_files = [fn for fn in os.listdir(simulated_files_path) if
                  os.path.isfile(os.path.join(simulated_files_path, fn))]
     assert len(sim_files) == user_config_dict['n_repertoires'] + 1
+
+
+def test_workflow_generate_baseline_repertoires(tmp_path):
+    user_config_dict = {'mode': 'baseline_repertoire_generation',
+                        'olga_model': 'humanTRB',
+                        'output_path': None,
+                        'n_repertoires': 10,
+                        'seed': 1234,
+                        'n_sequences': 10,
+                        'n_threads': 2,
+                        'store_intermediate_files': True,
+                        'depth_variation': True}
+    out_path = tmp_path / "workflow_output"
+    user_config_dict['output_path'] = out_path
+    desired_workflow = Workflows(**user_config_dict)
+    desired_workflow.execute()
+    print(out_path)

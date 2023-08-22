@@ -1,3 +1,0 @@
-[console_scripts]
-sim_airr = simAIRR.simairr_cli.simairr_cli:execute
-

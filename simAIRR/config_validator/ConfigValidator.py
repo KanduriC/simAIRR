@@ -35,7 +35,7 @@ class ConfigValidator:
         mode_agnostic_dict = {'mode': "signal_implantation", 'olga_model': None, 'background_sequences_path': None,
                               'output_path': os.path.join("./", "simairr_output"), 'n_repertoires': None,
                               'seed': random.randint(1, 10000), 'store_intermediate_files': False}
-        baseline_dict = {'n_sequences': None, 'n_threads': None}
+        baseline_dict = {'n_sequences': None, 'n_threads': None, 'depth_variation': False, 'negative_control': False}
         public_component_dict = {'n_threads': None, 'public_seq_proportion': 0.1,
                                  'public_seq_pgen_count_mapping_file': os.path.join(os.path.dirname(__file__),
                                                                                     "public_seq_pgen_count_map.tsv")}
@@ -63,7 +63,9 @@ class ConfigValidator:
                               'n_repertoires': {'required': True, 'type': int},
                               'seed': {'required': False, 'type': (int, type(None))},
                               'store_intermediate_files': {'required': False, 'type': (bool, type(None))}}
-        baseline_dict = {'n_sequences': {'required': True, 'type': int}, 'n_threads': {'required': True, 'type': int}}
+        baseline_dict = {'n_sequences': {'required': True, 'type': int}, 'n_threads': {'required': True, 'type': int},
+                         'depth_variation': {'required': False, 'type': (bool, type(None))},
+                         'negative_control': {'required': False, 'type': (bool, type(None))}}
         public_component_dict = {'n_threads': {'required': True, 'type': int},
                                  'public_seq_proportion': {'required': False, 'type': (float, type(None))},
                                  'public_seq_pgen_count_mapping_file': {'required': False, 'type': (str, type(None))}}

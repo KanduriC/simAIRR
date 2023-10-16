@@ -23,7 +23,7 @@ class Workflows:
                  signal_sequences_file: str = None, positive_label_rate: float = None, phenotype_burden: int = None,
                  phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None,
                  store_intermediate_files: bool = None, export_nt: bool = None, depth_variation: bool = None,
-                 negative_control: bool = None):
+                 negative_control: bool = None, export_cdr3_aa: bool = None, annotate_signal: bool = None):
         """
 
         :param mode: str
@@ -64,6 +64,8 @@ class Workflows:
         self.phenotype_pool_size = phenotype_pool_size
         self.allow_closer_phenotype_burden = allow_closer_phenotype_burden
         self.export_nt = export_nt
+        self.export_cdr3_aa = export_cdr3_aa
+        self.annotate_signal = annotate_signal
         self.store_intermediate_files = store_intermediate_files
 
     def _baseline_repertoire_generation(self):
@@ -137,7 +139,8 @@ class Workflows:
 
     def _simulated_repertoire_generation(self):
         rep_concat = RepComponentConcatenation(components_type="baseline_and_signal", super_path=self.output_path,
-                                               n_threads=self.n_threads, export_nt=self.export_nt)
+                                               n_threads=self.n_threads, export_nt=self.export_nt,
+                                               export_cdr3_aa=self.export_cdr3_aa, annotate_signal=self.annotate_signal)
         logging.info('Concatenating the signal component and baseline repertoire component')
         rep_concat.multi_concatenate_repertoire_components()
 

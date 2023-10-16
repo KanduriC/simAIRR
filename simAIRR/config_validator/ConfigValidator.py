@@ -42,7 +42,8 @@ class ConfigValidator:
         signal_implant_dict = {
             'signal_pgen_count_mapping_file': os.path.join(os.path.dirname(__file__), "signal_seq_pgen_count_map.tsv"),
             'signal_sequences_file': None, 'positive_label_rate': 0.5, 'phenotype_burden': None,
-            'phenotype_pool_size': None, 'allow_closer_phenotype_burden': True, 'export_nt': True}
+            'phenotype_pool_size': None, 'allow_closer_phenotype_burden': True, 'export_nt': True,
+            'annotate_signal': False, 'export_cdr3_aa': False}
         mode_specific_dicts = {"baseline_repertoire_generation": merge_dicts([mode_agnostic_dict, baseline_dict]),
                                "public_component_correction": merge_dicts(
                                    [mode_agnostic_dict, baseline_dict, public_component_dict]),
@@ -76,7 +77,9 @@ class ConfigValidator:
             'phenotype_burden': {'required': True, 'type': int},
             'phenotype_pool_size': {'required': False, 'type': (int, type(None))},
             'allow_closer_phenotype_burden': {'required': False, 'type': (bool, type(None))},
-            'export_nt': {'required': False, 'type': (bool, type(None))}}
+            'export_nt': {'required': False, 'type': (bool, type(None))},
+            'export_cdr3_aa': {'required': False, 'type': (bool, type(None))},
+            'annotate_signal': {'required': False, 'type': (bool, type(None))}}
         mode_specific_dicts = {"baseline_repertoire_generation": merge_dicts([mode_agnostic_dict, baseline_dict]),
                                "public_component_correction": merge_dicts(
                                    [mode_agnostic_dict, baseline_dict, public_component_dict]),

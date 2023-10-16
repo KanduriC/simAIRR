@@ -12,7 +12,7 @@ def test_public_private_multi_concatenate_repertoire_components(tmp_path):
     super_path.mkdir()
     primary_reps_path.mkdir()
     secondary_reps_path.mkdir()
-    df = pd.DataFrame(np.random.randint(0, 100, size=(100, 5)), columns=list('ABCDE'))
+    df = pd.DataFrame(np.random.randint(0, 100, size=(100, 4)), columns=list('ABCD'))
     for idx, chunk in enumerate(np.array_split(df, 10)):
         chunk.to_csv(primary_reps_path / f'rep_{idx}.tsv', index=None, header=None, sep='\t')
         chunk.to_csv(secondary_reps_path / f'rep_{idx}.tsv', index=None, header=None, sep='\t')

@@ -61,7 +61,7 @@ def prepare_test_data_signal_implantation_workflow():
                         'output_path': None,
                         'n_repertoires': 10,
                         'seed': 1234,
-                        'n_sequences': 10,
+                        'n_sequences': 100,
                         'n_threads': 2,
                         'public_seq_proportion': 0.1,
                         'public_seq_pgen_count_mapping_file': public_seq_pgen_count_map,
@@ -71,13 +71,19 @@ def prepare_test_data_signal_implantation_workflow():
                         'phenotype_burden': 2,
                         'phenotype_pool_size': None,
                         'allow_closer_phenotype_burden': True,
-                        'store_intermediate_files': True}
+                        'store_intermediate_files': True,
+                        'depth_variation': True,
+                        'export_nt': False,
+                        'export_cdr3_aa': True,
+                        'annotate_signal': True
+                        }
     return user_config_dict, signal_sequences
 
 
 # this covers all the other workflows
 def test_signal_implantation_workflow(tmp_path):
     out_path = tmp_path / "workflow_output"
+    print(out_path)
     user_config_dict, signal_sequences = prepare_test_data_signal_implantation_workflow()
     signal_file_path = os.path.join(tmp_path, 'signal_sequences.tsv')
     signal_sequences.to_csv(signal_file_path, index=None, header=None, sep='\t')

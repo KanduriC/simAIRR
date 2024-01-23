@@ -14,4 +14,3 @@ def test_get_absolute_number_of_repertoires():
         for i in range(10):
             num_reps.append(test_map.get_absolute_number_of_repertoires((-100, -20)))
         assert sum(i < 12 for i in num_reps) >= 0.7 * len(num_reps), "Warning: Unusually high number of repertoires given the weights of pgen bin"
-

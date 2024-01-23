@@ -26,7 +26,8 @@ def prepare_test_data(tmp_path, phen_pool_size, write_file=True):
         signal_pgen_count_map = PgenCountMap(number_of_repertoires=10, pgen_count_map_file=count_map_file)
     test_gen = SignalComponentGeneration(outdir_path=simairr_test_path,
                                          pgen_count_map_obj=signal_pgen_count_map,
-                                         desired_num_repertoires=10, desired_phenotype_burden=3, seed=1234,
+                                         desired_num_repertoires=10, n_neg_repertoires=10, desired_phenotype_burden=3,
+                                         seed=1234, noise_rate=0.2,
                                          phenotype_pool_size=phen_pool_size, allow_closer_phenotype_burden=True)
     return test_gen, signal_pgen_count_map, pgen_dat
 

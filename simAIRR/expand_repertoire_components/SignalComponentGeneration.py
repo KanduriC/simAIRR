@@ -10,13 +10,15 @@ from simAIRR.util.utilities import write_yaml_file
 
 class SignalComponentGeneration:
     def __init__(self, outdir_path, pgen_count_map_obj, desired_num_repertoires, desired_phenotype_burden, seed,
-                 phenotype_pool_size=None, allow_closer_phenotype_burden=True):
+                 n_neg_repertoires, noise_rate=None, phenotype_pool_size=None, allow_closer_phenotype_burden=True):
         self.signal_components_path = os.path.join(outdir_path, "signal_components")
         self.pgen_file = \
-        glob.glob(os.path.join(self.signal_components_path, "pgen_files", "pgen_*.tsv"), recursive=False)[0]
+            glob.glob(os.path.join(self.signal_components_path, "pgen_files", "pgen_*.tsv"), recursive=False)[0]
         self.signal_chunks_path = os.path.join(self.signal_components_path, "signal_rep_chunks")
         self.pgen_count_map_obj = pgen_count_map_obj
         self.desired_num_repertoires = desired_num_repertoires
+        self.n_neg_repertoires = n_neg_repertoires
+        self.noise_rate = noise_rate
         self.desired_phenotype_burden = desired_phenotype_burden
         self.phenotype_pool_size = phenotype_pool_size
         self.seed = seed
@@ -33,13 +35,14 @@ class SignalComponentGeneration:
                                                                      pgen_count_map_obj=self.pgen_count_map_obj)
         obtained_pool_size, implantation_stats = self._get_signal_seq_combination(pgen_intervals_array)
         sequence_proportion, implantation_count, implantable_seq_subset_indices = implantation_stats[0], \
-                                                                                  implantation_stats[1], \
-                                                                                  implantation_stats[2]
+            implantation_stats[1], \
+            implantation_stats[2]
         possible_phen_burden = round(implantation_count / self.desired_num_repertoires)
         self._write_implantation_stats_to_disk(possible_phen_burden, obtained_pool_size, implantation_count)
         signal_generation_status_code = self._assess_signal_generation_feasibility(possible_phen_burden)
         if signal_generation_status_code == 0 and write_signal_components:
             self._write_signal_components(implantable_seq_subset_indices, pgen_intervals_array)
+        self._write_signal_components(implantable_seq_subset_indices, pgen_intervals_array)
         return signal_generation_status_code
 
     def _assess_signal_generation_feasibility(self, possible_phen_burden):
@@ -75,8 +78,17 @@ class SignalComponentGeneration:
             pgen_count_map_obj=self.pgen_count_map_obj)
         np.savetxt(os.path.join(self.signal_components_path, "implanted_sequences_frequencies.txt"),
                    abs_rep_num, fmt="%s")
-        seq_presence_indices = ImplantationHelper.get_repertoire_sequence_presence_indices(
+        pos_rep_seq_presence_indices = ImplantationHelper.get_repertoire_sequence_presence_indices(
             desired_num_repertoires=self.desired_num_repertoires, abs_num_of_reps_list=abs_rep_num)
+        if self.noise_rate is not None:
+            neg_rep_num = [np.random.randint(low=0, high=int(rep_num * self.noise_rate)+2) for rep_num in abs_rep_num]
+            np.savetxt(os.path.join(self.signal_components_path, "implanted_sequences_frequencies_neg_reps.txt"),
+                       neg_rep_num, fmt="%s")
+            neg_rep_seq_presence_indices = ImplantationHelper.get_repertoire_sequence_presence_indices(
+                desired_num_repertoires=self.desired_num_repertoires, abs_num_of_reps_list=neg_rep_num)
+        else:
+            neg_rep_seq_presence_indices = []
+        seq_presence_indices = pos_rep_seq_presence_indices + neg_rep_seq_presence_indices
         ImplantationHelper.write_public_repertoire_chunks(original_repertoire_file=filtered_signal_pool_file,
                                                           output_files_path=self.signal_chunks_path,
                                                           repertoire_sequence_presence_indices=seq_presence_indices,
@@ -104,7 +116,8 @@ class SignalComponentGeneration:
                 implantable_seq_subset_indices = subset_seq_indices[sequence_proportion]
             else:
                 sequence_proportion, implantation_count = min(subset_seqs_total_implant_counts.items(),
-                                                              key=lambda k: abs(round(k[1] / self.desired_num_repertoires) - self.desired_phenotype_burden))
+                                                              key=lambda k: abs(round(k[
+                                                                                          1] / self.desired_num_repertoires) - self.desired_phenotype_burden))
                 implantable_seq_subset_indices = subset_seq_indices[sequence_proportion]
         else:
             implantation_count = self._get_avg_total_implantation_count(pgen_intervals_array)

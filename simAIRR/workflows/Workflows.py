@@ -21,7 +21,7 @@ class Workflows:
                  public_seq_proportion: float = None, public_seq_pgen_count_mapping_file: str = None,
                  signal_pgen_count_mapping_file: str = None,
                  signal_sequences_file: str = None, positive_label_rate: float = None, phenotype_burden: int = None,
-                 phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None,
+                 noise_rate: float = None, phenotype_pool_size: int = None, allow_closer_phenotype_burden: bool = None,
                  store_intermediate_files: bool = None, export_nt: bool = None, depth_variation: bool = None,
                  negative_control: bool = None, export_cdr3_aa: bool = None, annotate_signal: bool = None):
         """
@@ -40,6 +40,7 @@ class Workflows:
         :param signal_sequences_file: str
         :param positive_label_rate: float
         :param phenotype_burden: int
+        :param noise_rate: float
         :param phenotype_pool_size: int
         :param allow_closer_phenotype_burden: bool
         """
@@ -61,6 +62,7 @@ class Workflows:
         self.signal_sequences_file = signal_sequences_file
         self.positive_label_rate = positive_label_rate
         self.phenotype_burden = phenotype_burden
+        self.noise_rate = noise_rate
         self.phenotype_pool_size = phenotype_pool_size
         self.allow_closer_phenotype_burden = allow_closer_phenotype_burden
         self.export_nt = export_nt
@@ -113,10 +115,12 @@ class Workflows:
         pgen_compute.compute_pgen(user_signal_file)
         sort_olga_seq_by_pgen(user_signal_file, user_signal_pgen_file)
         self.n_pos_repertoires = int(round(self.n_repertoires * self.positive_label_rate))
+        n_neg_repertoires = self.n_repertoires - self.n_pos_repertoires
         signal_pgen_count_map = PgenCountMap(number_of_repertoires=self.n_pos_repertoires,
                                              pgen_count_map_file=self.signal_pgen_count_mapping_file)
         signal_gen = SignalComponentGeneration(outdir_path=self.output_path, pgen_count_map_obj=signal_pgen_count_map,
                                                desired_num_repertoires=self.n_pos_repertoires,
+                                               n_neg_repertoires=n_neg_repertoires, noise_rate=self.noise_rate,
                                                desired_phenotype_burden=self.phenotype_burden, seed=self.seed,
                                                phenotype_pool_size=self.phenotype_pool_size,
                                                allow_closer_phenotype_burden=self.allow_closer_phenotype_burden)

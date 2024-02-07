@@ -11,7 +11,7 @@ from simAIRR.baseline_repertoires_generation.BaselineRepertoiresGeneration impor
 from simAIRR.olga_compute_pgen.OlgaPgenComputation import OlgaPgenComputation
 from simAIRR.olga_compute_pgen.UniqueSequenceFilter import UniqueSequenceFilter
 from simAIRR.pgen_count_map.PgenCountMap import PgenCountMap
-from simAIRR.util.utilities import makedir_if_not_exists, sort_olga_seq_by_pgen
+from simAIRR.util.utilities import makedir_if_not_exists, sort_olga_seq_by_pgen, filter_legal_pairs, get_legal_vj_pairs
 
 
 class Workflows:
@@ -139,12 +139,17 @@ class Workflows:
                     self.export_nt = False
             if user_signal.iloc[:, 0].isnull().all():
                 self.export_nt = False
+        user_signal.columns = ['nt_seq', 'aa_seq', 'v_gene', 'j_gene']
+        if self.background_sequences_path is not None:
+            legal_pairs = get_legal_vj_pairs(self.background_sequences_path)
+            user_signal = filter_legal_pairs(user_signal, legal_pairs)
         return user_signal
 
     def _simulated_repertoire_generation(self):
         rep_concat = RepComponentConcatenation(components_type="baseline_and_signal", super_path=self.output_path,
                                                n_threads=self.n_threads, export_nt=self.export_nt,
-                                               export_cdr3_aa=self.export_cdr3_aa, annotate_signal=self.annotate_signal)
+                                               export_cdr3_aa=self.export_cdr3_aa, annotate_signal=self.annotate_signal,
+                                               n_pos_repertoires=self.n_pos_repertoires)
         logging.info('Concatenating the signal component and baseline repertoire component')
         rep_concat.multi_concatenate_repertoire_components()
 

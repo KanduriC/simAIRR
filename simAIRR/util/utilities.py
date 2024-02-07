@@ -1,3 +1,4 @@
+import logging
 import os.path
 import subprocess
 
@@ -66,3 +67,39 @@ def count_lines(file_path):
         return line_count
     except (subprocess.CalledProcessError, FileNotFoundError):
         return 0
+
+
+def concatenate_dataframes_with_replacement(dfs_list):
+    df_a, df_b = dfs_list
+    for idx, row in df_b.iterrows():
+        match_idx = df_a[(df_a['v_call'] == row['v_call']) & (df_a['j_call'] == row['j_call'])].index
+        if not match_idx.empty:
+            df_a = df_a.drop(match_idx[0])
+    df = pd.concat([df_a, df_b], ignore_index=True)
+    return df
+
+
+def filter_legal_pairs(df, legal_pairs):
+    df['pairs'] = list(zip(df['v_gene'], df['j_gene']))
+    initial_n_rows = df.shape[0]
+    df = df[df['pairs'].isin(legal_pairs)]
+    df = df.drop(columns=['pairs'])
+    final_n_rows = df.shape[0]
+    logging.info('Number of sequences removed from the user-supplied signal because of lack of legal gene '
+                 'combinations: ' + str(initial_n_rows - final_n_rows))
+    return df
+
+def get_legal_vj_pairs(background_sequences_path):
+    df = pd.read_csv(background_sequences_path, sep="\t", header=0)
+    if df.shape[1] == 3:
+        df.insert(0, 'nt_seq', "NA")
+    df.columns = ['junction', 'junction_aa', 'v_call', 'j_call']
+    df['v_j_call'] = list(zip(df['v_call'], df['j_call']))
+    unique_combinations = df['v_j_call'].value_counts()
+    unique_combinations = unique_combinations.reset_index()
+    unique_combinations.columns = ['v_j_call', 'count']
+    unique_combinations['count'] = unique_combinations['count'].astype(int)
+    unique_combinations['percentage'] = unique_combinations['count'] / unique_combinations['count'].sum() * 100
+    filtered_combinations = unique_combinations[unique_combinations['percentage'] > 0.015]
+    legal_combinations = filtered_combinations['v_j_call'].to_list()
+    return legal_combinations

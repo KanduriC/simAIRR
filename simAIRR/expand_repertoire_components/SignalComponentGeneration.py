@@ -85,7 +85,7 @@ class SignalComponentGeneration:
             np.savetxt(os.path.join(self.signal_components_path, "implanted_sequences_frequencies_neg_reps.txt"),
                        neg_rep_num, fmt="%s")
             neg_rep_seq_presence_indices = ImplantationHelper.get_repertoire_sequence_presence_indices(
-                desired_num_repertoires=self.desired_num_repertoires, abs_num_of_reps_list=neg_rep_num)
+                desired_num_repertoires=self.n_neg_repertoires, abs_num_of_reps_list=neg_rep_num)
         else:
             neg_rep_seq_presence_indices = []
         seq_presence_indices = pos_rep_seq_presence_indices + neg_rep_seq_presence_indices
@@ -97,7 +97,7 @@ class SignalComponentGeneration:
     def _determine_signal_sequence_combination(self, pgen_intervals_array, pool_size):
         if len(pgen_intervals_array) > pool_size:
             valid_seq_proportions = [1 - seq_proportion for seq_proportion in
-                                     [0, 0.05, 0.10, 0.20, 0.40, 0.60, 0.80, 0.90, 0.95] if
+                                     [0, 0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95] if
                                      seq_proportion * len(pgen_intervals_array) > pool_size]
             subset_seqs_total_implant_counts = {}
             subset_seq_indices = {}

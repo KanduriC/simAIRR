@@ -69,6 +69,7 @@ def prepare_test_data_signal_implantation_workflow():
                         'signal_sequences_file': None,
                         'positive_label_rate': 0.5,
                         'phenotype_burden': 2,
+                        'noise_rate': 0.5,
                         'phenotype_pool_size': None,
                         'allow_closer_phenotype_burden': True,
                         'store_intermediate_files': True,
@@ -111,4 +112,16 @@ def test_workflow_generate_baseline_repertoires(tmp_path):
     user_config_dict['output_path'] = out_path
     desired_workflow = Workflows(**user_config_dict)
     desired_workflow.execute()
+
+def test__parse_and_validate_user_signal(tmp_path):
+    out_path = tmp_path / "workflow_output"
     print(out_path)
+    user_config_dict, signal_sequences = prepare_test_data_signal_implantation_workflow()
+    signal_file_path = os.path.join(tmp_path, 'signal_sequences.tsv')
+    signal_sequences = signal_sequences.drop(signal_sequences.columns[0], axis=1)
+    signal_sequences.to_csv(signal_file_path, index=None, header=None, sep='\t')
+    user_config_dict['signal_sequences_file'] = signal_file_path
+    user_config_dict['output_path'] = out_path
+    desired_workflow = Workflows(**user_config_dict)
+    user_signal = desired_workflow._parse_and_validate_user_signal()
+    print(user_signal)

@@ -58,7 +58,10 @@ class RepComponentConcatenation:
             if self.components_type == "public_private":
                 concatenated_df = pd.concat(dfs_list)
             else:
-                concatenated_df = concatenate_dataframes_with_replacement(dfs_list)
+                if len(dfs_list) > 1:
+                    concatenated_df = concatenate_dataframes_with_replacement(dfs_list)
+                else:
+                    concatenated_df = pd.concat(dfs_list)
             if self.export_cdr3_aa is True:
                 concatenated_df['cdr3_aa'] = concatenated_df['junction_aa'].str[1:-1]
                 concatenated_df = concatenated_df.drop('junction_aa', axis=1)

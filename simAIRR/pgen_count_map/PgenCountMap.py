@@ -53,7 +53,7 @@ class PgenCountMap:
         implant_rate = self._get_implantation_rate(seq_pgen_bin)
         absolute_number_of_repertoires = round(implant_rate * self.number_of_repertoires)
         if absolute_number_of_repertoires < 2:
-            absolute_number_of_repertoires = 2
+            absolute_number_of_repertoires = 1
         return absolute_number_of_repertoires
 
 

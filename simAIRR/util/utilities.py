@@ -74,7 +74,20 @@ def concatenate_dataframes_with_replacement(dfs_list):
     for idx, row in df_b.iterrows():
         match_idx = df_a[(df_a['v_call'] == row['v_call']) & (df_a['j_call'] == row['j_call'])].index
         if not match_idx.empty:
-            df_a = df_a.drop(match_idx[0])
+            drop_index = df_a.loc[match_idx].sample().index
+            df_a = df_a.drop(drop_index)
+        else:
+            match_idx_v_call = df_a[(df_a['v_call'] == row['v_call'])].index
+            match_idx_j_call = df_a[(df_a['j_call'] == row['j_call'])].index
+            if not match_idx_v_call.empty:
+                drop_index = df_a.loc[match_idx_v_call].sample().index
+                df_a = df_a.drop(drop_index)
+            elif not match_idx_j_call.empty:
+                drop_index = df_a.loc[match_idx_j_call].sample().index
+                df_a = df_a.drop(drop_index)
+            else:
+                drop_index = df_a.sample().index
+                df_a = df_a.drop(drop_index)
     df = pd.concat([df_a, df_b], ignore_index=True)
     return df
 

@@ -75,8 +75,8 @@ class RepComponentConcatenation:
             concatenated_df = pd.DataFrame()
             # concatenated_df.columns = ['junction', 'junction_aa', 'v_call', 'j_call']
         if self.components_type == "public_private":
-            n_seq = np.random.poisson(self.n_sequences)
-            concatenated_df = concatenated_df.head(n_seq)
+            # n_seq = np.random.poisson(self.n_sequences)
+            concatenated_df = concatenated_df.head(self.n_sequences)
         concatenated_df = concatenated_df.sample(frac=1).reset_index(drop=True)
         concatenated_df.to_csv(concat_fn, header=is_head, index=None, sep='\t')
 
@@ -98,6 +98,7 @@ class RepComponentConcatenation:
             subject_ids = [fn.split(".")[0] for fn in file_names]
             metadata_dict = {'subject_id': subject_ids, 'filename': file_names, 'label_positive': labels}
             metadata_df = pd.DataFrame.from_dict(metadata_dict)
+            metadata_df = metadata_df.sample(frac=1).reset_index(drop=True)
             metadata_df.to_csv(os.path.join(self.super_path, "metadata.csv"))
             metadata_df.to_csv(os.path.join(self.concatenated_reps_path, "metadata.csv"))
         else:

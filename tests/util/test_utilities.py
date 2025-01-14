@@ -15,22 +15,20 @@ def test_count_lines(tmp_path):
 
 def test_concatenate_dataframes_with_replacement():
     df_a = pd.DataFrame({
-        'junction': ['j1', 'j2', 'j3', 'j4', 'j5'],
-        'junction_aa': ['aa1', 'aa2', 'aa3', 'aa4', 'aa5'],
-        'v_call': ['TRBV20-1', 'TRBV20-2', 'TRBV20-3', 'TRBV20-1', 'TRBV20-2'],
-        'j_call': ['TRBJ2-1', 'TRBJ2-2', 'TRBJ2-3', 'TRBJ2-1', 'TRBJ2-2']
+        'junction': ['j1', 'j2', 'j3', 'j4', 'j5', 'j16'],
+        'junction_aa': ['aa1', 'aa2', 'aa3', 'aa4', 'aa5', 'aa16'],
+        'v_call': ['TRBV20-1', 'TRBV20-2', 'TRBV20-3', 'TRBV20-1', 'TRBV20-2', 'TRBV20-3'],
+        'j_call': ['TRBJ2-1', 'TRBJ2-2', 'TRBJ2-3', 'TRBJ2-3', 'TRBJ2-2', 'TRBJ2-1']
     })
 
     df_b = pd.DataFrame({
-        'junction': ['j6', 'j7', 'j8'],
-        'junction_aa': ['aa5', 'aa6', 'aa7'],
-        'v_call': ['TRBV20-1', 'TRBV20-2', 'TRBV20-2'],
-        'j_call': ['TRBJ2-1', 'TRBJ2-2', 'TRBJ2-5']
+        'junction': ['j6', 'j7', 'j8', 'j9', 'j10'],
+        'junction_aa': ['aa5', 'aa6', 'aa7', 'aa8', 'aa9'],
+        'v_call': ['TRBV20-1', 'TRBV20-2', 'TRBV20-2', 'TRBV20-5', 'TRBV20-5'],
+        'j_call': ['TRBJ2-1', 'TRBJ2-2', 'TRBJ2-5', 'TRBJ2-1', 'TRBJ2-5']
     })
-
     df = concatenate_dataframes_with_replacement([df_a, df_b])
     assert df.shape == (6, 4)
-    assert df['junction'].tolist() == ['j3', 'j4', 'j5', 'j6', 'j7', 'j8']
 
 def test_get_legal_vj_pairs(tmp_path):
     user_config_dict = {'mode': 'baseline_repertoire_generation',

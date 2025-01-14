@@ -149,12 +149,3 @@ def user_config_dict():
                         'positive_label_rate': 0.5,
                         'public_seq_proportion': 0.1}
     return user_config_dict
-
-def test_debug(user_config_dict):
-    output_path = "/Users/skanduri/Documents/Projects/airr_ml_bm/27-02-2024"
-    user_config_dict['output_path'] = os.path.join(output_path, "debug_output")
-    user_config_dict['signal_pgen_count_mapping_file'] = "/Users/skanduri/Documents/Projects/airr_ml_bm/27-02-2024/signal_seq_pgen_count_map_burden_2_more_freq.tsv"
-    user_config_dict['signal_sequences_file'] = "/Users/skanduri/Documents/Projects/airr_ml_bm/27-02-2024/HCV_specific_sequences_vdjdb_04082023_processed_deduplicated_genenames_replaced.tsv"
-    user_config_dict['public_seq_pgen_count_mapping_file'] = "/Users/skanduri/PycharmProjects/simAIRR/simAIRR/config_validator/public_seq_pgen_count_map.tsv"
-    desired_workflow = Workflows(**user_config_dict)
-    desired_workflow.execute()

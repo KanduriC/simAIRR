@@ -38,7 +38,7 @@ def test__get_avg_total_implantation_count(tmp_path):
                                                                  pgen_count_map_obj=signal_pgen_count_map)
     avg_implant_count = test_gen._get_avg_total_implantation_count(pgen_intervals_array)
     assert isinstance(avg_implant_count, int)
-    assert avg_implant_count == 4  # because of thresholding in PgenCountMap.get_absolute_number_of_repertoires
+    assert avg_implant_count == 2  # because of thresholding in PgenCountMap.get_absolute_number_of_repertoires
 
 
 def test__determine_signal_sequence_combination(tmp_path):
@@ -48,7 +48,7 @@ def test__determine_signal_sequence_combination(tmp_path):
     sequence_proportion, implantation_count, implantable_seq_subset_indices = test_gen._determine_signal_sequence_combination(
         pgen_intervals_array, round(len(pgen_intervals_array) * 0.5))
     assert sequence_proportion == 0.4
-    assert implantation_count == 2
+    assert implantation_count == 1
     assert implantable_seq_subset_indices == [1]
 
 

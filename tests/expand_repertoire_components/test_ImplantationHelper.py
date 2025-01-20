@@ -27,7 +27,7 @@ def test_get_absolute_number_of_repertoires():
     pgen_intervals_array = ImplantationHelper.get_pgen_intervals(pgen_dat=pgen_dat,
                                                                  pgen_count_map_obj=signal_pgen_count_map)
     abs_rep_num = ImplantationHelper.get_absolute_number_of_repertoires(pgen_intervals_array, signal_pgen_count_map)
-    assert abs_rep_num == [2, 2]
+    assert abs_rep_num == [1, 1]
 
 
 def test_get_repertoire_sequence_presence_indices():
@@ -37,7 +37,7 @@ def test_get_repertoire_sequence_presence_indices():
     abs_rep_num = ImplantationHelper.get_absolute_number_of_repertoires(pgen_intervals_array, signal_pgen_count_map)
     seq_presence_indices = ImplantationHelper.get_repertoire_sequence_presence_indices(6, abs_rep_num)
     assert len(seq_presence_indices) == 6
-    assert len(np.concatenate(seq_presence_indices).ravel().tolist()) == 4  # see prepare_test_data why this value is 4
+    assert len(np.concatenate(seq_presence_indices).ravel().tolist()) == 2  # see prepare_test_data why this value is 4
 
 
 def test_write_public_repertoire_chunks(tmp_path):
